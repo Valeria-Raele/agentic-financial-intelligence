@@ -1,0 +1,23 @@
+Financial Results for Fiscal 2025
+• Record full-year revenue of $130.5 billion, up 114% from a year ago. 
+• GAAP earnings per diluted share was $2.94, up 147% from a year ago. Non-GAAP earnings per diluted share was $2.99, up 130% from a year ago.
+• NVIDIA will pay its next quarterly cash dividend of $0.01 per share on April 2, 2025, to all shareholders of record on March 12, 2025.
+
+“Demand for Blackwell is amazing as reasoning AI adds another scaling law — increasing compute for training makes models smarter and increasing compute for long thinking makes the answer smarter. We’ve successfully ramped up the massive-scale production of Blackwell AI supercomputers, achieving billions of dollars in sales in its first quarter. AI is advancing at light speed as agentic AI and physical AI set the stage for the next wave of AI to revolutionize the largest industries.” said Jensen Huang, founder and CEO of NVIDIA.
+
+Outlook
+• Revenue is expected to be $43.0 billion, plus or minus 2%.
+• GAAP and non-GAAP gross margins are expected to be 70.6% and 71.0%, respectively, plus or minus 50 basis points.
+• GAAP and non-GAAP operating expenses are expected to be approximately $5.2 billion and $3.6 billion, respectively.
+• GAAP and non-GAAP other income and expense are expected to be an income of approximately $400 million, excluding gains and losses from non-marketable and publicly-held equity securities.
+• GAAP and non-GAAP tax rates are expected to be 17.0%, plus or minus 1%, excluding any discrete items.
+
+Highlights
+• Data Center: Full-year revenue rose 142% to a record $115.2 billion.
+Announced that NVIDIA will serve as a key technology partner for the $500 billion Stargate Project.
+• Gaming and AI PC: Full-year revenue rose 9% to $11.4 billion.
+Announced new GeForce RTX™ 50 Series graphics cards and laptops powered by the NVIDIA Blackwell architecture, delivering breakthroughs in AI-driven rendering to gamers, creators and developers.
+• Professional Visualization: Full-year revenue rose 21% to $1.9 billion.
+Unveiled NVIDIA Project DIGITS, a personal AI supercomputer that provides AI researchers, data scientists and students worldwide with access to the power of the NVIDIA Grace™ Blackwell platform.
+• Automotive and Robotics: Full-year revenue rose 55% to $1.7 billion.
+Announced that Toyota, the world’s largest automaker, will build its next-generation vehicles on NVIDIA DRIVE AGX Orin™ running the safety-certified NVIDIA DriveOS operating system.  

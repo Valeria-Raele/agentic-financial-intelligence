@@ -1,0 +1,22 @@
+Full Year 2025
+• Net sales increased 12% to $716.9 billion in 2025, compared with $638.0 billion in 2024. Excluding the $4.4 billion favorable impact from year-over-year changes in foreign exchange rates throughout the year, net sales increased 12% compared with 2024.
+• Operating income increased to $80.0 billion in 2025, compared with $68.6 billion in 2024.
+• Net income increased to $77.7 billion in 2025, or $7.17 per diluted share, compared with $59.2 billion, or $5.53 per diluted share, in 2024.
+• Operating cash flow increased 20% to $139.5 billion for the trailing twelve months, compared with $115.9 billion for the trailing twelve months ended December 31, 2024.
+• Free cash flow decreased to $11.2 billion for the trailing twelve months, driven primarily by a year-over-year increase of $50.7 billion in purchases of property and equipment, net of proceeds from sales and incentives. 
+
+“AWS growing 24% (our fastest growth in 13 quarters), Advertising growing 22%, Stores growing briskly across North America and International, our chips business growing triple digit percentages year-over-year—this growth is happening because we’re continuing to innovate at a rapid rate, and identify and knock down customer problems. With such strong demand for our existing offerings and seminal opportunities like AI, chips, robotics, and low earth orbit satellites, we expect to invest about $200 billion in capital expenditures across Amazon in 2026, and anticipate strong long-term return on invested capital." said Andy Jassy, President and CEO, Amazon. 
+
+Some other highlights since the company’s last earnings announcement include that Amazon
+• Announced new AWS agreements with OpenAI, Visa, the NBA, BlackRock, Perplexity, Lyft, United Airlines, DoorDash, Salesforce, U.S. Air Force, Adobe, Thomson Reuters, AT&T, S&P Global, National Bank of Canada, London Stock Exchange Group, Choice Hotels, Accenture, Indeed, HSBC, CrowdStrike, and more.
+• Continued gaining significant momentum with AWS custom chips.
+• Introduced Graviton5, AWS’s most powerful and advanced CPU for a broad set of cloud workloads. Used by over 90% of the top 1,000 AWS customers, Graviton is up to 40% more price-performant than leading x86 processors, and enables applications to run faster, reduce costs, and meet sustainability goals.
+• Added 20+ fully-managed models on Amazon Bedrock, including from Amazon Nova as well as Anthropic, Google, OpenAI, NVIDIA, Qwen, Mistral AI, Stability AI, Cohere, MiniMax AI, and Moonshot AI—enabling customers to test and switch between models without rewriting code while accessing breakthrough capabilities in coding, reasoning, and agentic workflows.
+• Expanded its family of Nova models, including Nova 2 Lite and Nova 2 Pro for frontier intelligence with lower costs and latency, and Nova 2 Sonic for multilingual conversational AI.
+• Introduced Nova Forge, a first-of-its-kind service that empowers organizations to build their own optimized variants of Nova by pre-training the model with their own proprietary data early in the process.
+• Introduced Nova Act for building and managing reliable AI agents for UI-based workflows.
+• Introduced new capabilities for Amazon Bedrock AgentCore, AWS’s pioneering set of infrastructure building blocks for developers and companies to build secure, scalable agents.
+
+First Quarter 2026 Guidance
+• Net sales are expected to be between $173.5 billion and $178.5 billion, or to grow between 11% and 15% compared with first quarter 2025. This guidance anticipates a favorable impact of approximately 180 basis points from foreign exchange rates.
+• Operating income is expected to be between $16.5 billion and $21.5 billion, compared with $18.4 billion in first quarter 2025. This guidance includes approximately $1 billion of higher year-over-year Amazon Leo costs as we scale in 2026, as well as investment in quick commerce and even sharper prices in our international stores business.
