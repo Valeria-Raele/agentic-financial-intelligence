@@ -1,6 +1,3 @@
-# Original Colab cells, unchanged and in their original execution order.
-# Run via run.py to preserve the notebook shared namespace.
-
 # ========= ORIGINAL NOTEBOOK CELL 17 =========
 # ============================================================
 # BOX 8 — AGENT 1: REQUEST INTERPRETATION
