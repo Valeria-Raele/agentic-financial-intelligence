@@ -1120,16 +1120,16 @@ Aligned execution and result matching with normalized temporal identities.
 
 KEY CODE / REPRESENTATIVE IMPLEMENTATION
 
-# Previous component identity
+### Previous component identity
 metric
 
-# Updated component identity
+### Updated component identity
 (metric, time_period)
 
-# Previous behavior
+### Previous behavior
 str(value)
 
-# Updated behavior
+### Updated behavior
 copy.deepcopy(value)
 
 Technical contribution: multi-company, multi-metric and multi-period questions without temporal cross-contamination.
