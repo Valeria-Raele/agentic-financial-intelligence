@@ -913,6 +913,13 @@ yet been fully rewarded by its stock performance.
 ====================================================================================================
 ```
 
+### Response Generation Time
+
+Generating an answer to a financial question may take approximately **10–20 minutes**, depending on the complexity of the question and external API response times.
+
+This processing time is expected. Please allow the system to complete its analysis and generate the response.
+
+
 ## Major Code-Level Developments - Original Source Text
 
 Major Code-Level Developments
