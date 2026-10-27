@@ -37,6 +37,12 @@ def main():
         print(f"COMPLETED: {name}", flush=True)
     if args.check:
         print("All modules compiled. This is NOT an end-to-end execution test.")
+    else:
+        # Expose the shared execution state to the calling Colab notebook (%run).
+        globals().update({
+            key: value for key, value in namespace.items()
+            if key not in {"__name__", "__file__", "__builtins__"}
+        })
 
 
 if __name__ == "__main__":
