@@ -44,23 +44,48 @@ The dashboard is useful, offering clear and detailed visibility into credit bala
 
 Tavily was integrated as a complementary, informational web-search tool to retrieve the industry sectors of the 30 Dow Jones companies analyzed in the project. The sector-grouped printout in Box 4 adds qualitative company context alongside the project's quantitative analysis. The search is performed through the Tavily API at runtime, using the `TAVILY` secret stored privately in Google Colab.
 
+
 ## Project Specifications and Conversational Question Flow
 
-Agentic Financial Intelligence Project
+### Agentic Financial Intelligence Project
 
-Inspiration and Objective
+#### Inspiration and Objective
 
 Data analysis can go beyond calculating individual indicators. An in-depth financial assessment may require combining multiple analytical dimensions, including market performance, risk metrics, technical signals, and corporate disclosures. Fundamentally, the objective is to look beyond the numbers, understand the underlying context and heterogeneous factors, interpret their relationships, and identify the different drivers influencing financial performance.
 
 The Agentic Financial Intelligence project was developed to address this challenge through a multi-agent AI system focused on the historical price time series and corporate financial documents of the 30 constituent stocks of the Dow Jones Industrial Average (DJIA).
 
-How It Was Built
+
+#### Objective
+
+To develop an AI-powered financial intelligence platform that supports investment research and financial decision-making by integrating quantitative market analytics with qualitative corporate financial information.
+
+The platform enables users to investigate multiple companies, financial indicators, observation periods, and corporate disclosures through natural-language questions, generating structured, comparative, and evidence-based financial assessments.
+
+Its primary objective is to **reduce the complexity of multidimensional financial analysis**, moving beyond isolated metrics toward an integrated understanding of financial performance, risk, corporate fundamentals, and management expectations.
+
+#### Target Users
+
+##### Primary Target — Financial and Investment Professionals
+
+- **Financial Analysts and Equity Research Analysts:** conducting company research, financial performance assessments, peer comparisons, and analysis of corporate disclosures.
+- **Investment Analysts and Portfolio Managers:** evaluating investment opportunities, risk-return profiles, market indicators, and the consistency between stock performance and company fundamentals.
+- **Investment Strategists and Asset Allocation Professionals:** investigating market trends, comparing securities, and identifying relationships across financial indicators and analytical dimensions.
+
+##### Secondary Target — Financial Research and Advisory Professionals
+
+- **Wealth Management and Investment Advisory Professionals:** supporting investment research, product analysis, and evidence-based investment discussions.
+- **Financial Researchers:** exploring relationships between quantitative market data, corporate financial results, and management expectations.
+- **Advanced Individual Investors:** conducting structured financial research using natural-language queries without having to manually combine multiple analytical tools and information sources.
+  
+
+#### How It Was Built
 
 The project was developed in Python using Google Colab and LangGraph, with NVIDIA Nemotron 3 Ultra 550B, accessed through Nebius Token Factory.
 
 The project supports two distinct analytical workflows: deterministic quantitative calculations and semantic analysis of corporate financial documents. These components are architecturally separated, with calculations performed independently of the processing of qualitative financial disclosures.
 
-Quantitative Financial Analysis - Deterministic Calculation Tools
+#### Quantitative Financial Analysis - Deterministic Calculation Tools
 
 The first workflow establishes a validated quantitative foundation for the Dow Jones stock universe.
 
@@ -72,7 +97,7 @@ Specialized agents process financial market data through deterministic Python/Pa
 
 - Asset Pricing - CAPM: Beta, annualized Alpha, R-squared, observed annualized return, CAPM expected annual return, and the difference between observed and expected returns.
 
-Integration of Corporate Financial Documentation
+#### Integration of Corporate Financial Documentation
 
 Results 2025 Press Releases (usually published in March - April 2026) are ingested into the workflow and transformed into a queryable information base containing financial results, performance drivers, business highlights, management guidance, strategic priorities, milestones, and management commentary.
 
@@ -82,7 +107,7 @@ This approach allows the system to retrieve and interpret corporate evidence eve
 
 As a result, heterogeneous corporate documents become accessible through a unified analytical framework.
 
-Multi-Factor Financial Reasoning
+#### Multi-Factor Financial Reasoning
 
 NVIDIA Nemotron plays a central role in orchestrating specialized agents and their quantitative and document-based tools, interpreting complex financial requests, supporting response validation, and generating insightful commentary based on multiple sources.
 
@@ -102,7 +127,7 @@ Or formulate a more complex question combining financial statements, stock perfo
 
 "Can you compare IBM's 2025 earnings, its stock performance in 2025 and 2026, and assess whether this evidence is consistent with the growth guidance communicated by management for 2026?"
 
-Context Retrieval and Conversational Continuity
+#### Context Retrieval and Conversational Continuity
 
 Once the quantitative and documentary information has been acquired, the second workflow manages natural-language queries.
 
@@ -110,7 +135,7 @@ The workflow accesses the results stored in final_state and verifies their compa
 
 This mechanism preserves analytical consistency across successive questions while improving computational efficiency and supporting a more natural, context-aware interaction.
 
-Research Reliability and Validation
+#### Research Reliability and Validation
 
 The project incorporates complementary validation mechanisms throughout the analytical workflow.
 
@@ -124,7 +149,7 @@ Each calculation retains its analytical identity, allowing the system to associa
 
 The broader objective is to establish a modular, transparent, and reliable architecture, in which each component performs a clearly defined responsibility and contributes to a certified, reusable, and queryable body of financial evidence.
 
-Development Challenges and Iterative Refinement
+#### Development Challenges and Iterative Refinement
 
 A major challenge in developing Agentic Financial Intelligence was interpreting combined requests and producing complete analyses of complex financial questions.
 
@@ -134,13 +159,14 @@ Comparing Gemini's and Nemotron's responses to complex financial questions helpe
 
 Rather than relying on the model's default behavior, these observations informed an iterative refinement process aimed at strengthening Nemotron's ability to interpret complex requests, retrieve relevant evidence, and identify differences across multiple analytical factors.
 
-What I Learned
+#### What I Learned
 
 Developing Agentic Financial Intelligence reinforced my belief in the importance of treating financial data with methodological rigor, ensuring that information is properly acquired, cleaned, validated, and interpreted within a broader analytical framework rather than reduced to isolated numerical calculations.
 
 The project also demonstrated the importance of designing workflows around the specific capabilities and limitations of individual language models.
 
 Differences between models extend beyond the accuracy of individual responses. This work highlighted the need to continuously adapt the system to the model's behavior and capabilities, improving its ability to interpret complex requests and operate within an increasingly sophisticated, multidimensional analytical environment.
+
 
 ### REAL EXAMPLE OF THE PROJECT'S CONVERSATIONAL FLOW - 20 Questions and Answers
 
