@@ -1,6 +1,3 @@
-# Original Colab cells, unchanged and in their original execution order.
-# Run via run.py to preserve the notebook shared namespace.
-
 # ========= ORIGINAL NOTEBOOK CELL 66 =========
 # ============================================================
 # BOX 50 — REAL INPUT FOR THE AGENTIC SYSTEM
