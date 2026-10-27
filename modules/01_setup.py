@@ -1,6 +1,3 @@
-# Original Colab cells, unchanged and in their original execution order.
-# Run via run.py to preserve the notebook shared namespace.
-
 # ========= ORIGINAL NOTEBOOK CELL 8 =========
 # ============================================================
 # LIBRARIES
@@ -494,7 +491,6 @@ else:
 
 # ============================================================
 # BOX 4 — DEFINITION AND VALIDATION OF THE DOW JONES UNIVERSE
-# + TAVILY SECTOR CLASSIFICATION
 # ============================================================
 
 from typing import List
@@ -579,143 +575,6 @@ print(
     "\nSubsequent boxes can proceed "
     "with downloading the 30 historical time series."
 )
-
-# ============================================================
-# TAVILY — SECTOR CLASSIFICATION
-# INFORMATIONAL OUTPUT ONLY
-# ============================================================
-
-COMPANY_NAMES = {
-    "AAPL": "Apple",
-    "AMGN": "Amgen",
-    "AMZN": "Amazon",
-    "AXP": "American Express",
-    "BA": "Boeing",
-    "CAT": "Caterpillar",
-    "CRM": "Salesforce",
-    "CSCO": "Cisco",
-    "CVX": "Chevron",
-    "DIS": "Walt Disney",
-    "GS": "Goldman Sachs",
-    "HD": "Home Depot",
-    "HON": "Honeywell",
-    "IBM": "IBM",
-    "JNJ": "Johnson & Johnson",
-    "JPM": "JPMorgan Chase",
-    "KO": "Coca-Cola",
-    "MCD": "McDonald's",
-    "MMM": "3M",
-    "MRK": "Merck & Co.",
-    "MSFT": "Microsoft",
-    "NKE": "Nike",
-    "NVDA": "NVIDIA",
-    "PG": "Procter & Gamble",
-    "SHW": "Sherwin-Williams",
-    "TRV": "Travelers Companies",
-    "UNH": "UnitedHealth Group",
-    "V": "Visa",
-    "VZ": "Verizon",
-    "WMT": "Walmart",
-}
-
-GICS_SECTORS = [
-    "Communication Services",
-    "Consumer Discretionary",
-    "Consumer Staples",
-    "Energy",
-    "Financials",
-    "Health Care",
-    "Industrials",
-    "Information Technology",
-    "Materials",
-    "Real Estate",
-    "Utilities",
-]
-
-def lookup_company_sector(ticker, company, api_key):
-    response = requests.post(
-        "https://api.tavily.com/search",
-        json={
-            "api_key": api_key,
-            "query": (
-                f"{company} {ticker} "
-                "GICS sector classification"
-            ),
-            "search_depth": "basic",
-            "max_results": 3,
-            "include_answer": "basic",
-        },
-        timeout=30,
-    )
-    response.raise_for_status()
-    data = response.json()
-
-    answer = str(data.get("answer") or "")
-
-    matches = [
-        sector for sector in GICS_SECTORS
-        if re.search(
-            r"\b" + re.escape(sector) + r"\b",
-            answer,
-            flags=re.IGNORECASE,
-        )
-    ]
-
-    if len(matches) == 1:
-        return matches[0]
-
-    return "Unverified"
-
-
-def print_dow_jones_sectors():
-    api_key = userdata.get("TAVILY")
-
-    if not api_key:
-        print("\nTavily API key not found in Colab Secrets.")
-        return
-
-    sectors = defaultdict(list)
-
-    print("\nRetrieving company sectors via Tavily...")
-
-    for ticker in tickers:
-        company = COMPANY_NAMES[ticker]
-
-        try:
-            sector = lookup_company_sector(
-                ticker, company, api_key
-            )
-        except requests.RequestException as exc:
-            sector = "Lookup unavailable"
-            print(f"Lookup failed for {ticker}: {exc}")
-
-        sectors[sector].append(
-            f"{company} ({ticker})"
-        )
-
-    print("\n" + "=" * 60)
-    print("DOW JONES — COMPANIES BY SECTOR")
-    print("=" * 60)
-
-    for sector in sorted(sectors):
-        companies = sorted(sectors[sector])
-
-        print(f"\n{sector} ({len(companies)})")
-
-        for company in companies:
-            print(f"  - {company}")
-
-    print("\nTotal companies:", sum(map(len, sectors.values())))
-    print("Source: Tavily API")
-    print("Informational only — financial analysis unchanged.")
-
-
-# ============================================================
-# FINAL SECTOR OUTPUT
-# ============================================================
-
-print_dow_jones_sectors()
-
 
 # ========= ORIGINAL NOTEBOOK CELL 14 =========
 # ============================================================
@@ -1530,3 +1389,4 @@ def inspect_agent_output(
 print(
     "inspect_agent_output function defined."
 )
+
