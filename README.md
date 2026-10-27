@@ -961,60 +961,60 @@ In fact, the project evolved beyond the accurate retrieval and reporting of quan
 
 These core advances were supported by further architectural enhancements designed to consolidate the project's reliability, including efficient data retrieval, atomic requirement decomposition, canonical result reuse, conversational continuity, advanced temporal reasoning, evidence validation and workflow orchestration.
 
-Code-level development summary
+
+## Code-level development summary
+
 New modules, major redesigns and BOX-level implementation
 
+### 1. Atomic decomposition and canonical result identity
 
-1. Atomic decomposition and canonical result identity
+**MAJOR ARCHITECTURAL REDESIGN — BOX 38, 39, 40, 41, 42, 43, 44, 45, 46**
 
-MAJOR ARCHITECTURAL REDESIGN - BOX 38, 39, 40, 41, 42, 43, 44, 45, 46
+Complex financial questions are decomposed into independently identifiable analytical requirements: Tool × Ticker/Universe × Metric × Time Period.
 
-Complex financial questions are decomposed into independently identifiable analytical requirements: Tool x Ticker/Universe x Metric x Time Period.
-
-BOX 38
+**BOX 38**
 
 Formalized the distinction between atomic_id and result_signature, separating requirement identity from result identity.
 
-BOX 39
+**BOX 39**
 
 Centralized canonical identity construction through build_atomic_id(), build_canonical_result_signature() and build_result_signature_id().
 
-BOX 40
+**BOX 40**
 
 Aligned retrieval of previous results with canonical identifiers.
 
-BOX 41
+**BOX 41**
 
 Introduced atomic decomposition across companies, metrics, tools and time periods.
 
-BOX 42
+**BOX 42**
 
 Propagated atomic_id into execution-plan steps.
 
-BOX 43
+**BOX 43**
 
 Aligned result retrieval, execution, compatibility checks and persistence with canonical signatures.
 
-BOX 44
+**BOX 44**
 
 Propagated atomic identifiers into normalized evidence.
 
-BOX 45
+**BOX 45**
 
 Connected response generation to exact requirements and corresponding evidence.
 
-BOX 46
+**BOX 46**
 
 Added atomic-level coverage and numerical consistency checks.
 
-Technical contribution: consistent requirement identity across semantic analysis, planning, execution, evidence construction, synthesis and validation.
+**Technical contribution:** consistent requirement identity across semantic analysis, planning, execution, evidence construction, synthesis and validation.
 
+### 1. Atomic decomposition — code
 
-1. Atomic decomposition - code
+**REPRESENTATIVE IMPLEMENTATION**
 
-REPRESENTATIVE IMPLEMENTATION
-
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
 ```python
 atomic_identity = {
@@ -1049,38 +1049,39 @@ result_signature = build_canonical_result_signature(
 signature_id = build_result_signature_id(result_signature)
 ```
 
-2. Intelligent result reuse and conversational continuity
+### 2. Intelligent result reuse and conversational continuity
 
-MAJOR WORKFLOW REDESIGN - BOX 38-43, 49
+**MAJOR WORKFLOW REDESIGN — BOX 38–43, 49**
 
 A component-level reuse mechanism enables Nemotron to work with previously calculated results rather than repeatedly requesting the same operations.
 
-BOX 38-39
+**BOX 38–39**
 
 Canonical result signatures for matching requested and stored analytical components.
 
-BOX 40
+**BOX 40**
 
 Retrieval of compatible historical results and previously identified groups of financial instruments.
 
-BOX 41
+**BOX 41**
 
 Semantic decomposition and REUSE versus EXECUTE decisions for individual components.
 
-BOX 42
+**BOX 42**
 
 Planning preserves reuse decisions without reopening semantic interpretation.
 
-BOX 43
+**BOX 43**
 
 Deterministic compatibility checks; execution only for missing components.
 
-BOX 49
+**BOX 49**
 
 Persistence of result ticker groups through extract_answer_ticker_group().
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
+```python
 matched_result_id
 reuse_output
 result_signature
@@ -1088,81 +1089,83 @@ requirement_id
 group_is_binding
 execution_scope["tickers"]
 result_ticker_group
+```
 
-Technical contribution: structured analytical memory, selective execution, reduced redundant tool calls and consistency across multi-turn reasoning.
+**Technical contribution:** structured analytical memory, selective execution, reduced redundant tool calls and consistency across multi-turn reasoning.
 
+### 3. Advanced temporal reasoning
 
-3. Advanced temporal reasoning
-
-MAJOR CHANGES - BOX 30, 40, 41, 42, 43
+**MAJOR CHANGES — BOX 30, 40, 41, 42, 43**
 
 The temporal interpretation layer supports rolling windows, multiple observation periods and metric-specific intervals within the same question.
 
-BOX 30, 40
+**BOX 30, 40**
 
 Recognition and normalization of rolling periods and contextual temporal references.
 
-BOX 41
+**BOX 41**
 
 Changed quantitative component identity from metric to (metric, time_period).
 
-BOX 42
+**BOX 42**
 
 Normalize_time_periods() preserves structured period objects rather than converting them into strings.
 
-BOX 42
+**BOX 42**
 
 Removed inappropriate global start_date/end_date propagation; resolved dates for each period.
 
-BOX 43
+**BOX 43**
 
 Aligned execution and result matching with normalized temporal identities.
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
-### Previous component identity
+```python
+# Previous component identity
 metric
 
-### Updated component identity
+# Updated component identity
 (metric, time_period)
 
-### Previous behavior
+# Previous behavior
 str(value)
 
-### Updated behavior
+# Updated behavior
 copy.deepcopy(value)
+```
 
-Technical contribution: multi-company, multi-metric and multi-period questions without temporal cross-contamination.
+**Technical contribution:** multi-company, multi-metric and multi-period questions without temporal cross-contamination.
 
+### 4. NEW BOX 40 BIS
 
-4. NEW BOX 40 BIS
-
-NEW CODE MODULE - DUAL-DOMAIN FINANCIAL QUESTION RECOGNITION
+**NEW CODE MODULE — DUAL-DOMAIN FINANCIAL QUESTION RECOGNITION**
 
 A dedicated preprocessing module detects questions requiring both quantitative analytics and qualitative evidence from corporate financial documentation.
 
-40 BIS - NEW
+**40 BIS — NEW**
 
 Introduced DUAL_DOMAIN_ENGLISH_ALIASES to recognize domains and associated tool terminology.
 
-40 BIS - NEW
+**40 BIS — NEW**
 
 Implemented dual_domain_question_check(question) to identify combined quantitative and documentary requirements.
 
-40 BIS - NEW
+**40 BIS — NEW**
 
 Introduced tool_request_matrix to track requested tools, metrics and components.
 
-BOX 41
+**BOX 41**
 
 Integrated dual-domain recognition into semantic analysis and workflow state.
 
-BOX 42
+**BOX 42**
 
 Integrated dual_domain_internal_report() into the Planner context for relevant questions.
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
+```python
 DUAL_DOMAIN_ENGLISH_ALIASES
 
 dual_domain_question_check(question)
@@ -1170,58 +1173,59 @@ dual_domain_question_check(question)
 dual_domain_internal_report()
 
 tool_request_matrix
+```
 
-Technical contribution: explicit recognition of questions that require both numerical market analysis and financial-document evidence.
+**Technical contribution:** explicit recognition of questions that require both numerical market analysis and financial-document evidence.
 
+### 5. NEW BOX 41 BIS
 
-5. NEW BOX 41 BIS
-
-NEW CODE MODULE - EVIDENCE COVERAGE AND COMPLETENESS
+**NEW CODE MODULE — EVIDENCE COVERAGE AND COMPLETENESS**
 
 A separate validation layer verifies whether quantitative and documentary components requested by the user have actually been retrieved.
 
-41 BIS - NEW
+**41 BIS — NEW**
 
 Introduced dual_domain_post_validation_check(state).
 
-41 BIS - NEW
+**41 BIS — NEW**
 
 Compared requested components in tool_request_matrix against selected_evidence.
 
-41 BIS - NEW
+**41 BIS — NEW**
 
 Added granular requested/retrieved checks by tool, metric, ticker and period.
 
-BOX 44
+**BOX 44**
 
 Preserved documentary evidence and source identifiers.
 
-BOX 45
+**BOX 45**
 
 Connected evidence coverage to answer generation.
 
-BOX 46
+**BOX 46**
 
 Integrated documentary completeness signals into final answer validation.
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
 ```python
 document_retrieved[ticker] = int(
     document_successfully_retrieved
 )
+
 all_documents_retrieved = int(
     all(document_retrieved.values())
 )
 ```
 
-Technical contribution: deterministic completeness checks supporting Nemotron with explicit evidence-availability information.
+**Technical contribution:** deterministic completeness checks supporting Nemotron with explicit evidence-availability information.
 
-5. Evidence coverage - code
+### 5. Evidence coverage — code
 
-REPRESENTATIVE VALIDATION LOGIC
+**REPRESENTATIVE VALIDATION LOGIC**
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
 ```python
 check = dual_domain_post_validation_check(state)
@@ -1238,37 +1242,35 @@ if check["all_documents_retrieved"] == 0:
     validation["complete_given_available_evidence"] = False
 ```
 
-6. NEW preliminary BOX 45
+### 6. NEW preliminary BOX 45
 
-ENTIRELY NEW CODE MODULE - DYNAMIC FEW-SHOT PROMPTING
+**ENTIRELY NEW CODE MODULE — DYNAMIC FEW-SHOT PROMPTING**
 
 A new few-shot reference system improves answer consistency, completeness, financial reasoning structure and formatting.
 
-PRE-45 - NEW
+**PRE-45 — NEW**
 
 Introduced BOX45_APPROVED_EXAMPLES with 20 curated financial question-answer examples.
 
-PRE-45 - NEW
+**PRE-45 — NEW**
 
 Implemented select_box45_reference_examples() to select relevant examples based on the current question and execution plan.
 
-PRE-45 - NEW
+**PRE-45 — NEW**
 
 Added conversational context where necessary.
 
-BOX 45
+**BOX 45**
 
 Integrated selected examples into the synthesis prompt alongside actual retrieved evidence.
 
-BOX 46-47
+**BOX 46–47**
 
 Reinforced consistency checks and controlled revision behavior.
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
 ```python
-
-
 BOX45_APPROVED_EXAMPLES
 
 select_box45_reference_examples(
@@ -1278,74 +1280,73 @@ select_box45_reference_examples(
 )
 ```
 
-Technical contribution: dynamic, domain-specific in-context guidance for Nemotron; examples guide structure, not financial facts.
+**Technical contribution:** dynamic, domain-specific in-context guidance for Nemotron; examples guide structure, not financial facts.
 
+### 7. BOX 45 — major reconstruction
 
-7. BOX 45 - major reconstruction
-
-EXTENSIVELY REDESIGNED CORE MODULE
+**EXTENSIVELY REDESIGNED CORE MODULE**
 
 The synthesis layer was substantially rebuilt to produce complete, comparative financial answers grounded in quantitative results and qualitative corporate disclosures.
 
-SYSTEM
+**SYSTEM**
 
 ANSWER_SYNTHESIZER_SYSTEM_INSTRUCTION: strengthened instructions for complete, evidence-grounded financial answers.
 
-PROMPT
+**PROMPT**
 
 build_answer_synthesis_prompt(): structured question, plan, selected evidence, missing information and few-shot references.
 
-ATOMIC
+**ATOMIC**
 
 Linked metrics and periods to their retrieved evidence.
 
-COMPARE
+**COMPARE**
 
 Explicit handling of compare, rank, evaluate, explain and assess.
 
-CONTROL
+**CONTROL**
 
 Prevented the model from independently changing tool-generated filters, rankings or selected ticker groups.
 
-HYBRID EVIDENCE SYNTHESIS
+**HYBRID EVIDENCE SYNTHESIS**
 
 Integrated quantitative indicators with corporate financial results, management guidance and press-release information.
 
-COMMENTARY
+**COMMENTARY**
 
 FINAL_INTEGRATED_COMMENTARY_INSTRUCTIONS: required a reasoned final financial assessment grounded in available evidence.
 
-EVIDENCE PRESERVATION
+**Technical contribution:** extensive customization of Nemotron for structured, comparative and evidence-grounded financial analysis.
+
+**EVIDENCE PRESERVATION**
 
 Strengthened the treatment of documentary evidence and selected few-shot examples during prompt construction.
 
-Technical contribution: extensive customization of Nemotron for structured, comparative and evidence-grounded financial analysis.
+### 7. BOX 45 — financial commentary
 
-
-7. BOX 45 - financial commentary
-
-MAJOR MODEL-FACING CODE CHANGES
+**MAJOR MODEL-FACING CODE CHANGES**
 
 The commentary instructions guide Nemotron to identify positive, negative and mixed evidence; explain how quantitative and qualitative findings converge or diverge; and formulate a sophisticated, supported financial interpretation.
 
-BOX 45
+**BOX 45**
 
 Distinguishes observed quantitative performance from forward-looking corporate statements.
 
-BOX 45
+**BOX 45**
 
 Requires explanation of favorable, unfavorable or mixed financial signals rather than a simple list of metrics.
 
-BOX 45
+**BOX 45**
 
 Integrates the final comparative conclusion with the specific evidence retrieved for each company.
 
-PRE-45
+**PRE-45**
 
 Provides curated examples for answer structure and financial commentary consistency.
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
+```python
 ANSWER_SYNTHESIZER_SYSTEM_INSTRUCTION
 
 FINAL_INTEGRATED_COMMENTARY_INSTRUCTIONS
@@ -1356,109 +1357,104 @@ selected_evidence
 missing_information
 reference_examples
 execution_plan
+```
 
-Technical contribution: grounded reasoning about what the evidence means, including mixed signals and divergences between market data and corporate disclosures.
+**Technical contribution:** grounded reasoning about what the evidence means, including mixed signals and divergences between market data and corporate disclosures.
 
+### 8. Deterministic financial filtering
 
-8. Deterministic financial filtering
-
-MAJOR CHANGES - BOX 41, 42, 43, 44, 45, 46, 47
+**MAJOR CHANGES — BOX 41, 42, 43, 44, 45, 46, 47**
 
 Quantitative selection remains deterministic; Nemotron interprets and explains the results without independently recalculating rankings or filters.
 
-BOX 41
+**BOX 41**
 
 Recognizes quantitative conditions and requested selections.
 
-BOX 42
+**BOX 42**
 
 Binds conditions to source_step_id, source_tool and source_period.
 
-BOX 43
+**BOX 43**
 
 Performs deterministic, period-aware filtering and intersections.
 
-BOX 44
+**BOX 44**
 
 Propagates condition_filter_result and filtered_tickers as authoritative evidence.
 
-BOX 45
+**BOX 45**
 
 Explains filtered results without reselecting instruments.
 
-BOX 46
+**BOX 46**
 
 Prevents validation from recalculating filters, rankings and Top-N.
 
-BOX 47
+**BOX 47**
 
 Restricts revision from changing deterministic selections.
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
+```python
 source_step_id
 source_tool
 source_period
 
 condition_filter_result
 filtered_tickers
+```
 
-Technical contribution: separation of LLM interpretation from deterministic financial calculation.
+**Technical contribution:** separation of LLM interpretation from deterministic financial calculation.
 
+### 9. Evidence-grounded validation
 
-9. Evidence-grounded validation
-
-MAJOR STRENGTHENING - BOX 44, 45, 46, 47
+**MAJOR STRENGTHENING — BOX 44, 45, 46, 47**
 
 The answer pipeline verifies completeness, numerical consistency and correspondence between the original question and the retrieved evidence.
 
-BOX 44
+**BOX 44**
 
 Evidence normalization, source attribution, atomic identifiers and missing-information tracking.
 
-BOX 45
+**BOX 45**
 
 Synthesis grounded in relevant analytical and documentary components.
 
-BOX 46
+**BOX 46**
 
 Atomic-by-atomic verification of metrics, periods, numerical values and documentary coverage.
 
-BOX 47
+**BOX 47**
 
 Controlled revision based on validation findings and existing evidence.
 
-KEY CODE / REPRESENTATIVE IMPLEMENTATION
+**KEY CODE / REPRESENTATIVE IMPLEMENTATION**
 
+```python
 atomic_id
 selected_evidence
 missing_information
 
 requires_revision
 complete_given_available_evidence
+```
 
-Technical contribution: multi-stage synthesis, validation and revision to reduce incomplete or unsupported answers.
+**Technical contribution:** multi-stage synthesis, validation and revision to reduce incomplete or unsupported answers.
 
+### Submission priorities
 
-Submission priorities
+**MAJOR DEVELOPMENTS TO EMPHASIZE**
 
-MAJOR DEVELOPMENTS TO EMPHASIZE
-
-BOX 45 - Major synthesis redesign: model-facing financial reasoning and sophisticated commentary.
-
-NEW Preliminary BOX 45 - Dynamic few-shot: domain-specific response guidance.
-
-NEW BOX 40 BIS - Combined quantitative/documentary question recognition.
-
-NEW BOX 41 BIS - Evidence completeness and coverage validation.
-
-Atomic decomposition and canonical signatures - requirement identity across the workflow.
-
-Intelligent REUSE/EXECUTE - structured result memory and selective execution.
-
-Temporal reasoning - correct multi-period financial analysis.
-
-Validation and controlled revision - traceability, completeness and reliability.
+1. BOX 45 — Major synthesis redesign: model-facing financial reasoning and sophisticated commentary.
+2. NEW Preliminary BOX 45 — Dynamic few-shot: domain-specific response guidance.
+3. NEW BOX 40 BIS — Combined quantitative/documentary question recognition.
+4. NEW BOX 41 BIS — Evidence completeness and coverage validation.
+5. Atomic decomposition and canonical signatures — requirement identity across the workflow.
+6. Intelligent REUSE/EXECUTE — structured result memory and selective execution.
+7. Temporal reasoning — correct multi-period financial analysis.
+8. Validation and controlled revision — traceability, completeness and reliability.
 
 These developments distinguish the hackathon-era agentic architecture from the pre-existing financial analytics foundation.
 
