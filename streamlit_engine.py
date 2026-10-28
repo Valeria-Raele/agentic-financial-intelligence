@@ -36,6 +36,13 @@ def _install_colab_secrets_adapter(secrets):
     sys.modules["google.colab"] = colab
 
 def initialize_engine(secrets):
+    # Compatibility with notebook code written for pandas < 2.1.
+    # pandas 3.x removed DataFrame.applymap; DataFrame.map has the same
+    # element-wise behavior and accepts the same basic arguments.
+    import pandas as pd
+    if not hasattr(pd.DataFrame, "applymap"):
+        pd.DataFrame.applymap = pd.DataFrame.map
+        logging.warning("PANDAS_COMPAT: restored DataFrame.applymap alias to DataFrame.map")
     _install_colab_secrets_adapter(secrets)
     namespace = {"__name__": "__main__", "__file__": str(BASE / "run.py")}
     for stage in STAGES:
