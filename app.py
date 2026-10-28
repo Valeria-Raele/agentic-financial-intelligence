@@ -418,9 +418,9 @@ if st.session_state["research_turns"]:
 
 st.markdown('<div class="research-divider"></div>', unsafe_allow_html=True)
 st.markdown("""
-<div class="a-page">
-  <div class="eyebrow">Available Companies · Dow Jones 30</div>
-  <div class="company-list">3M · Amazon · American Express · Amgen · Apple · Boeing · Caterpillar · Chevron · Cisco · Coca-Cola · Disney · Goldman Sachs · Home Depot · Honeywell · IBM · Johnson &amp; Johnson · JPMorgan Chase · McDonald’s · Merck · Microsoft · Nike · NVIDIA · Procter &amp; Gamble · Salesforce · Sherwin-Williams · Travelers · UnitedHealth · Verizon · Visa · Walmart</div>
+<div class="a-page" style="width:88%;margin:36px auto 42px;text-align:center">
+  <div class="eyebrow" style="margin-bottom:20px">Available Companies · Dow Jones 30</div>
+  <div class="company-list" style="margin-top:0;line-height:2.25">3M · Amazon · American Express · Amgen · Apple · Boeing · Caterpillar · Chevron · Cisco · Coca-Cola · Disney · Goldman Sachs · Home Depot · Honeywell · IBM · Johnson &amp; Johnson · JPMorgan Chase · McDonald’s · Merck · Microsoft · Nike · NVIDIA · Procter &amp; Gamble · Salesforce · Sherwin-Williams · Travelers · UnitedHealth · Verizon · Visa · Walmart</div>
 </div>
 """, unsafe_allow_html=True)
 
