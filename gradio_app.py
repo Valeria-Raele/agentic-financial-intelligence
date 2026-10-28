@@ -8,6 +8,7 @@ import threading
 from functools import partial
 from pathlib import Path
 import gradio as gr
+import spaces
 
 BASE = Path(__file__).resolve().parent
 ASSETS = BASE / "assets"
@@ -29,6 +30,7 @@ def initialize_engine_once():
             _engine = initialize_engine(os.environ)
         return _engine
 
+@spaces.GPU
 def run_question(question, current_state, turns):
     question = (question or "").strip()
     turns = list(turns or [])
