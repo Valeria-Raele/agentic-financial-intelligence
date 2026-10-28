@@ -3668,8 +3668,8 @@ def validate_tool_outputs(outputs: Dict[str, Any], expected_outputs: Sequence[st
             if not numeric_values.empty:
                 if numeric_values.isna().all().all():
                     issues.append(f'Only NaN values in {output_name}.')
-                finite_mask = numeric_values.map(lambda item: True if pd.isna(item) else math.isfinite(float(item)))
-                if not finite_mask.all().all():
+                all_values_finite = all(pd.isna(item) or math.isfinite(float(item)) for row in numeric_values.itertuples(index=False, name=None) for item in row)
+                if not all_values_finite:
                     issues.append(f'Infinite values in {output_name}.')
         if output_name in PROJECT_OUTPUT_NOMENCLATURE:
             extracted = extract_output_scope_values(output_name=output_name, value=value)
