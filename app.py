@@ -408,6 +408,9 @@ if st.button("Analyze", type="primary"):
         except Exception as exc:
             st.error(f"Research engine error: {exc}")
 
+st.markdown("**Research Processing Time**")
+st.caption("Due to the highly sophisticated and structured nature of the financial analysis, the system requires approximately **10–20 minutes to generate a response**. Please allow this time for the analysis to complete.")
+
 if st.session_state["research_turns"]:
     st.markdown("### Research Answers")
     with st.container(height=460, border=True):
