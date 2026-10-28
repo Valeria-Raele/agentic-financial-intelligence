@@ -3,8 +3,6 @@ import html
 from pathlib import Path
 import streamlit as st
 import hmac
-import logging
-import traceback
 
 st.set_page_config(
     page_title="AI Financial Intelligence | AI-Powered Financial Research",
@@ -407,12 +405,8 @@ if st.button("Analyze", type="primary"):
                 answer, updated_state = ask(engine, current_question, current_state)
                 st.session_state["agentic_state"] = updated_state
                 st.session_state["research_turns"].append((current_question, answer))
-        except Exception:
-            logging.exception("RESEARCH_QUERY_FAILED: full traceback follows")
-            st.session_state["research_turns"].append((
-                current_question,
-                "The answer to this question is currently unavailable. Please try again later."
-            ))
+        except Exception as exc:
+            st.error("The response is currently unavailable. Please try again later.")
 
 if st.session_state["research_turns"]:
     st.markdown("### Research Answers")
@@ -423,6 +417,13 @@ if st.session_state["research_turns"]:
             st.divider()
 
 st.markdown('<div class="research-divider"></div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="a-page" style="width:88%;margin:36px auto 42px;text-align:center">
+  <div class="eyebrow" style="margin-bottom:20px">Available Companies · Dow Jones 30</div>
+  <div class="company-list" style="margin-top:0;line-height:2.25">3M · Amazon · American Express · Amgen · Apple · Boeing · Caterpillar · Chevron · Cisco · Coca-Cola · Disney · Goldman Sachs · Home Depot · Honeywell · IBM · Johnson &amp; Johnson · JPMorgan Chase · McDonald’s · Merck · Microsoft · Nike · NVIDIA · Procter &amp; Gamble · Salesforce · Sherwin-Williams · Travelers · UnitedHealth · Verizon · Visa · Walmart</div>
+</div>
+""", unsafe_allow_html=True)
+
 with st.expander("Explore example questions · 20 research ideas", expanded=False):
     st.caption("Choose a question to insert it into the research field. You can edit it before analyzing.")
     category = st.radio(
@@ -456,5 +457,6 @@ with st.expander("Explore example questions · 20 research ideas", expanded=Fals
                     use_container_width=True,
                 )
 
-st.markdown('<div class="a-page"><div class="foot">AI Financial Intelligence · Powered by NVIDIA Nemotron and Nebius</div></div>', unsafe_allow_html=True)
+st.markdown('<div class="a-page" style="margin-top:32px"><p style="color:#8B9AAA;font-size:11px;line-height:1.65;margin:0">Research Processing Time: Due to the highly sophisticated and structured nature of the financial analysis, the system requires approximately 10–20 minutes to generate a response. Please allow this time for the analysis to complete.</p></div>', unsafe_allow_html=True)
 
+st.markdown('<div class="a-page"><div class="foot">AI Financial Intelligence · Powered by NVIDIA Nemotron and Nebius</div></div>', unsafe_allow_html=True)
