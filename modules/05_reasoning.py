@@ -3694,7 +3694,10 @@ def _tool_process_target(queue: Any, tool_function: Callable, args: List[Any], k
     try:
         queue.put({'ok': True, 'result': tool_function(*args, **kwargs)})
     except Exception as error:
-        queue.put({'ok': False, 'error': str(error)})
+        import traceback as _diagnostic_traceback
+        queue.put({'ok': False, 'error': str(error),
+                   'exception_type': type(error).__name__,
+                   'original_traceback': _diagnostic_traceback.format_exc()})
 
 def run_tool_with_timeout(tool_function: Callable, args: List[Any], kwargs: Dict[str, Any], timeout_seconds: int) -> Any:
     context = mp.get_context('fork' if 'fork' in mp.get_all_start_methods() else 'spawn')
@@ -3710,7 +3713,18 @@ def run_tool_with_timeout(tool_function: Callable, args: List[Any], kwargs: Dict
         raise RuntimeError('The tool process did not return any result.')
     payload = queue.get()
     if not payload.get('ok'):
-        raise RuntimeError(payload.get('error', 'Unknown tool error.'))
+        import logging as _diagnostic_logging
+        _diagnostic_logging.error(
+            "TOOL_CHILD_PROCESS_FAILURE type=%s message=%s\nORIGINAL_TRACEBACK\n%s",
+            payload.get('exception_type', 'unknown'),
+            payload.get('error', 'Unknown tool error.'),
+            payload.get('original_traceback', 'Traceback unavailable'),
+        )
+        raise RuntimeError(
+            f"Tool child process failed ({payload.get('exception_type', 'unknown')}): "
+            f"{payload.get('error', 'Unknown tool error.')}\n"
+            f"Original child traceback:\n{payload.get('original_traceback', 'unavailable')}"
+        )
     return payload.get('result')
 
 def _result_identity_token(value: Any) -> str:
@@ -3937,6 +3951,13 @@ def execute_plan_step(state: Dict[str, Any], step: Dict[str, Any], tool_registry
             normalized_step['referenced_tickers'] = result_signature.get('tickers', [])
         return {'step_id': step_id, 'status': 'COMPLETED', 'action_type': action_type, 'selected_tool': selected_tool, 'source': 'partial_reuse+tool_execution' if partial_reuse_outputs else 'tool_execution', 'outputs': normalized_outputs, 'output_fields': list(normalized_outputs), 'execution_time_seconds': round(elapsed_time, 6), 'error': None, 'ignored_parameters': ignored_parameters, 'result_signature': result_signature, 'result_key': build_result_storage_key(normalized_step), 'output_validation': output_validation}
     except Exception as error:
+        import logging as _diagnostic_logging
+        import traceback as _diagnostic_traceback
+        _diagnostic_logging.error(
+            "TOOL_EXECUTION_FAILURE step=%s tool=%s exception=%s\n%s",
+            step_id, selected_tool, type(error).__name__,
+            _diagnostic_traceback.format_exc(),
+        )
         elapsed_time = time.perf_counter() - start_time
         return {'step_id': step_id, 'status': 'FAILED', 'action_type': action_type, 'selected_tool': selected_tool, 'source': 'tool_execution', 'outputs': {}, 'output_fields': [], 'execution_time_seconds': round(elapsed_time, 6), 'error': str(error), 'ignored_parameters': [], 'result_signature': result_signature}
 
