@@ -1,0 +1,11 @@
+streamlit
+numpy
+pandas
+requests
+yfinance
+openai
+langgraph
+scikit-learn
+pandas-market-calendars
+ipywidgets
+ipython
