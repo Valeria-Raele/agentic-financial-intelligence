@@ -102,6 +102,21 @@ def financial_metrics_tool(state: MarketDataState, risk_free_rate: float=0.03, s
     execution_time = time.perf_counter() - start_time
     tool_report = {'tool_name': 'financial_metrics_tool', 'execution_timestamp': datetime.now().isoformat(), 'execution_time_seconds': round(execution_time, 4), 'execution_status': 'completed' if not calculation_errors else 'completed_with_errors', 'coherence_check': coherence_check, 'tickers_analyzed': int(log_returns.shape[1]), 'ticker_year_rows': int(len(final_table)), 'period_mode': 'exact_interval' if exact_period_mode else 'calendar_year', 'start_date': normalized_start_date, 'end_date': normalized_end_date, 'calculation_errors': calculation_errors}
     return {'financial_metrics': final_table, 'financial_metrics_report': tool_report, 'current_node': 'financial_metrics_tool', 'execution_status': 'completed'}
+# Diagnostic-only boundary: preserve the original exception and calculations.
+_financial_metrics_tool_original = financial_metrics_tool
+
+def financial_metrics_tool(*args, **kwargs):
+    try:
+        return _financial_metrics_tool_original(*args, **kwargs)
+    except Exception:
+        import logging as _diagnostic_logging
+        import traceback as _diagnostic_traceback
+        _diagnostic_logging.error(
+            "FINANCIAL_METRICS_ORIGINAL_TRACEBACK\n%s",
+            _diagnostic_traceback.format_exc(),
+        )
+        raise
+
 financial_metrics_output = financial_metrics_tool(state=final_state, risk_free_rate=0.03)
 final_state.update(financial_metrics_output)
 final_state.setdefault('response_display_formats', {})
