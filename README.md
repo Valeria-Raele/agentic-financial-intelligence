@@ -17,6 +17,12 @@ Access **AI Financial Intelligence**, the interactive interface for multidimensi
 
 **[AI Financial Intelligence — Live Demo](https://ai-financial-intelligence-system.streamlit.app/)**
 
+**Demo access instructions**
+
+The live demo is password-protected. To access the application, open the link above and enter the following password when prompted:
+
+**Password:** `HACKATHON2026`
+
 The application provides a unified interface for exploring quantitative market indicators, corporate financial disclosures, and AI-powered financial analysis through natural-language queries.
 
 ## Installation and execution
