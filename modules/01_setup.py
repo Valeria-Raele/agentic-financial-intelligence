@@ -24,16 +24,44 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 from openai import OpenAI
-from google.colab import userdata
+try:
+    from google.colab import userdata
+except ImportError:
+    userdata = None
 from langgraph.graph import StateGraph, START, END
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import textwrap
 try:
     import pandas_market_calendars as mcal
-except ImportError:
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', '-q', 'pandas_market_calendars'])
-    import pandas_market_calendars as mcal
+except ImportError as exc:
+    raise ImportError(
+        "Missing dependency 'pandas_market_calendars'. Add it to requirements.txt."
+    ) from exc
+
+# Compatibility for dependencies that still invoke the pandas 2.x DataFrame API.
+# This does not change calculations or call the deprecated method itself.
+if not hasattr(pd.DataFrame, 'applymap') and hasattr(pd.DataFrame, 'map'):
+    pd.DataFrame.applymap = pd.DataFrame.map
+
+
+def get_project_secret(name: str, default=None):
+    """Resolve a key from Colab, Streamlit secrets, or environment variables."""
+    if userdata is not None:
+        try:
+            value = userdata.get(name)
+            if value:
+                return value
+        except (KeyError, AttributeError, RuntimeError):
+            pass
+    try:
+        import streamlit as st
+        value = st.secrets.get(name)
+        if value:
+            return str(value)
+    except (ImportError, KeyError, FileNotFoundError, RuntimeError, AttributeError):
+        pass
+    return os.environ.get(name, default)
 warnings.filterwarnings('ignore')
 PROJECT_NAME = 'Dow Jones Market Data Preparation and Validation System'
 DEFAULT_START_DATE = '2010-01-01'
@@ -66,17 +94,19 @@ DEFAULT_INTERVAL = '1d'
 MAIN_MODEL = 'nvidia/Nemotron-3-Ultra-550b-a55b'
 CRITIC_MODEL = MAIN_MODEL
 ENABLE_CROSS_SOURCE_CHECK = True
-TWELVE_DATA_API_KEY = userdata.get('TWELVE_DATA')
+TWELVE_DATA_API_KEY = get_project_secret('TWELVE_DATA')
 MAX_CROSS_SOURCE_TICKERS = 5
 CROSS_SOURCE_TOLERANCE_PERCENT = 0.1
 RANDOM_SAMPLE_ROWS = 5
 MAX_MISSING_RATIO = 0.01
 MINIMUM_OBSERVATIONS = 252
-NEBIUS_API_KEY = userdata.get('NEBIUS_API_KEY')
-os.environ['NEBIUS_API_KEY'] = NEBIUS_API_KEY
-LANGSMITH_API_KEY = userdata.get('LANGSMITH_API_KEY')
-os.environ['LANGSMITH_TRACING_V2'] = 'true'
-os.environ['LANGSMITH_API_KEY'] = LANGSMITH_API_KEY
+NEBIUS_API_KEY = get_project_secret('NEBIUS_API_KEY')
+if NEBIUS_API_KEY:
+    os.environ['NEBIUS_API_KEY'] = NEBIUS_API_KEY
+LANGSMITH_API_KEY = get_project_secret('LANGSMITH_API_KEY')
+os.environ['LANGSMITH_TRACING_V2'] = 'true' if LANGSMITH_API_KEY else 'false'
+if LANGSMITH_API_KEY:
+    os.environ['LANGSMITH_API_KEY'] = LANGSMITH_API_KEY
 os.environ['LANGSMITH_ENDPOINT'] = 'https://api.smith.langchain.com'
 os.environ['LANGSMITH_PROJECT'] = 'Agentic_AI'
 MODEL_NAME = MAIN_MODEL
@@ -88,7 +118,10 @@ if MODEL_NAME == FALLBACK_MODEL_NAME:
     raise ValueError('The primary model and the fallback model must be different.')
 from typing import List
 from collections import defaultdict
-from google.colab import userdata
+try:
+    from google.colab import userdata
+except ImportError:
+    userdata = None
 import requests
 import re
 DOW_JONES_TICKERS = ['AAPL', 'AMGN', 'AMZN', 'AXP', 'BA', 'CAT', 'CRM', 'CSCO', 'CVX', 'DIS', 'GS', 'HD', 'HON', 'IBM', 'JNJ', 'JPM', 'KO', 'MCD', 'MMM', 'MRK', 'MSFT', 'NKE', 'NVDA', 'PG', 'SHW', 'TRV', 'UNH', 'V', 'VZ', 'WMT']
