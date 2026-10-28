@@ -3,6 +3,8 @@ import os
 import sys
 import types
 import threading
+import logging
+import traceback
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
@@ -60,5 +62,31 @@ def ask(engine, question, state):
         answer = result.get("final_answer")
         if not answer:
             raise RuntimeError("The engine returned no final_answer.")
-        # The engine returns the updated state as the result itself.
-        return str(answer), result
+        question_state = result.get("question_final_state")
+        if not isinstance(question_state, dict):
+            logging.error("RESEARCH_DIAGNOSTICS: missing question_final_state; keys=%s", list(result))
+            raise RuntimeError("The engine returned no valid question state.")
+
+        errors = question_state.get("tool_execution_errors")
+        trace = question_state.get("execution_trace")
+        logging.warning("RESEARCH_DIAGNOSTICS: question=%r", question)
+        logging.warning("RESEARCH_DIAGNOSTICS: tool_execution_errors=%r", errors)
+        logging.warning("RESEARCH_DIAGNOSTICS: execution_trace=%r", trace)
+        logging.warning("RESEARCH_DIAGNOSTICS: execution_status=%r", question_state.get("execution_status"))
+
+        # Do not expose tool failures as a technical answer to end users.
+        # Preserve the full state and diagnostics for investigation.
+        failed = False
+        if isinstance(errors, (list, tuple, dict)) and len(errors) > 0:
+            failed = True
+        if isinstance(trace, (list, tuple)):
+            failed = failed or any(
+                isinstance(step, dict)
+                and str(step.get("status", "")).upper() == "FAILED"
+                and "financial_metrics" in str(step.get("selected_tool", step.get("tool", ""))).lower()
+                for step in trace
+            )
+        if failed and ("financial_metrics" in str(errors).lower() or "financial_metrics" in str(trace).lower()):
+            raise RuntimeError("A required financial_metrics tool execution failed; see RESEARCH_DIAGNOSTICS in logs.")
+
+        return str(answer), question_state
