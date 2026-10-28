@@ -3,13 +3,6 @@
 def _download_yahoo_market_data(ticker_symbols, start_date, end_date, interval):
     ticker_symbols = tuple(ticker_symbols)
 
-    def _fetch(tickers, start, end, frequency):
-        return yf.download(
-            tickers=list(tickers), start=start, end=end,
-            interval=frequency, group_by='ticker', auto_adjust=False,
-            actions=False, progress=False, threads=True,
-        )
-
     try:
         import streamlit as st
         streamlit_running = st.runtime.exists()
@@ -19,7 +12,7 @@ def _download_yahoo_market_data(ticker_symbols, start_date, end_date, interval):
     if streamlit_running:
         # A module-level cached function is reused across reruns by Streamlit.
         return _cached_yahoo_market_data(ticker_symbols, start_date, end_date, interval)
-    return _fetch(ticker_symbols, start_date, end_date, interval)
+    return _cached_yahoo_market_data(ticker_symbols, start_date, end_date, interval)
 
 
 def _cached_yahoo_market_data(ticker_symbols, start_date, end_date, interval):
