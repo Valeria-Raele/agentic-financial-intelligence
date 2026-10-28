@@ -4927,6 +4927,8 @@ def evidence_normalizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     return normalized
 evidence_normalization_node = evidence_normalizer_node
 
+_box44_original_normalizer_document_status = evidence_normalizer_node
+
 def evidence_normalizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     result = _box44_original_normalizer_document_status(state)
     check_state = dict(state)
