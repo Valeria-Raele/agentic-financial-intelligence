@@ -4,16 +4,6 @@ aligned_volumes = final_state['aligned_volumes']
 simple_returns = final_state['simple_returns']
 log_returns = final_state['log_returns']
 
-def _numeric_dataframe_without_apply(frame: pd.DataFrame) -> pd.DataFrame:
-    """Convert each column to numeric, preserving index and column labels."""
-    converted = pd.concat(
-        [pd.to_numeric(frame.iloc[:, position], errors='coerce')
-         for position in range(frame.shape[1])],
-        axis=1,
-    )
-    converted.columns = frame.columns
-    return converted
-
 def financial_metrics_tool(state: MarketDataState, risk_free_rate: float=0.03, start_date: str=None, end_date: str=None, period_type: str=None) -> Dict[str, Any]:
     start_time = time.perf_counter()
     calculation_errors = []
@@ -102,21 +92,6 @@ def financial_metrics_tool(state: MarketDataState, risk_free_rate: float=0.03, s
     execution_time = time.perf_counter() - start_time
     tool_report = {'tool_name': 'financial_metrics_tool', 'execution_timestamp': datetime.now().isoformat(), 'execution_time_seconds': round(execution_time, 4), 'execution_status': 'completed' if not calculation_errors else 'completed_with_errors', 'coherence_check': coherence_check, 'tickers_analyzed': int(log_returns.shape[1]), 'ticker_year_rows': int(len(final_table)), 'period_mode': 'exact_interval' if exact_period_mode else 'calendar_year', 'start_date': normalized_start_date, 'end_date': normalized_end_date, 'calculation_errors': calculation_errors}
     return {'financial_metrics': final_table, 'financial_metrics_report': tool_report, 'current_node': 'financial_metrics_tool', 'execution_status': 'completed'}
-# Diagnostic-only boundary: preserve the original exception and calculations.
-_financial_metrics_tool_original = financial_metrics_tool
-
-def financial_metrics_tool(*args, **kwargs):
-    try:
-        return _financial_metrics_tool_original(*args, **kwargs)
-    except Exception:
-        import logging as _diagnostic_logging
-        import traceback as _diagnostic_traceback
-        _diagnostic_logging.error(
-            "FINANCIAL_METRICS_ORIGINAL_TRACEBACK\n%s",
-            _diagnostic_traceback.format_exc(),
-        )
-        raise
-
 financial_metrics_output = financial_metrics_tool(state=final_state, risk_free_rate=0.03)
 final_state.update(financial_metrics_output)
 final_state.setdefault('response_display_formats', {})
@@ -298,8 +273,8 @@ def momentum_tool(state: Dict[str, Any], formation_period_months: int=12, dollar
         raise ValueError(f'The columns of aligned_prices and aligned_volumes do not match. Tickers present only in volumes: {missing_price_tickers}; tickers present only in prices: {missing_volume_tickers}.')
     if not aligned_prices.index.equals(aligned_volumes.index):
         raise ValueError('aligned_prices and aligned_volumes do not share the same time index.')
-    aligned_prices = _numeric_dataframe_without_apply(aligned_prices[common_tickers])
-    aligned_volumes = _numeric_dataframe_without_apply(aligned_volumes[common_tickers])
+    aligned_prices = aligned_prices[common_tickers].apply(pd.to_numeric, errors='coerce')
+    aligned_volumes = aligned_volumes[common_tickers].apply(pd.to_numeric, errors='coerce')
     if aligned_prices.isna().any().any():
         invalid_tickers = aligned_prices.columns[aligned_prices.isna().any(axis=0)].tolist()
         raise ValueError(f'aligned_prices contains missing values. Tickers involved: {invalid_tickers}')
@@ -373,8 +348,8 @@ def momentum_tool(state: Dict[str, Any], formation_period_months: int=12, dollar
     if not np.isfinite(momentum_results[['Momentum', 'Average Dollar Volume']].to_numpy(dtype=float)).all():
         raise ValueError('momentum_results contains infinite or invalid numeric values.')
     formatted_table = momentum_results.copy()
-    formatted_table['Momentum'] = [f'{value * 100:,.2f}%' for value in formatted_table['Momentum']]
-    formatted_table['Average Dollar Volume'] = [f'$ {value:,.0f}' for value in formatted_table['Average Dollar Volume']]
+    formatted_table['Momentum'] = formatted_table['Momentum'].map(lambda value: f'{value * 100:,.2f}%')
+    formatted_table['Average Dollar Volume'] = formatted_table['Average Dollar Volume'].map(lambda value: f'$ {value:,.0f}')
     formatted_table = formatted_table.set_index('Rank')
     if display_output:
         pass
@@ -468,7 +443,7 @@ def capm_tool(state: Dict[str, Any], tickers: Optional[Sequence[str]]=None, star
         raise ValueError('The log_returns matrix is empty.')
     if not isinstance(stock_returns.index, pd.DatetimeIndex):
         raise TypeError('The log_returns index must be a DatetimeIndex.')
-    stock_returns = _numeric_dataframe_without_apply(stock_returns.sort_index()).replace([np.inf, -np.inf], np.nan)
+    stock_returns = stock_returns.sort_index().apply(pd.to_numeric, errors='coerce').replace([np.inf, -np.inf], np.nan)
     if isinstance(benchmark_returns, pd.DataFrame):
         if benchmark_returns.shape[1] != 1:
             raise ValueError('benchmark_log_returns must contain a single column.')
