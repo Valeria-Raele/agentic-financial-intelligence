@@ -5,6 +5,8 @@ is a Colab command-line interface and is not executed by Streamlit.
 """
 
 import threading
+import logging
+import traceback
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
@@ -22,7 +24,11 @@ def initialize_engine(secrets=None):
     for stage in STAGES:
         path = BASE / "modules" / f"{stage}.py"
         source = path.read_text(encoding="utf-8")
-        exec(compile(source, str(path), "exec"), namespace, namespace)
+        try:
+            exec(compile(source, str(path), "exec"), namespace, namespace)
+        except Exception:
+            logging.error("ENGINE_STAGE_FAILURE stage=%s file=%s\n%s", stage, path, traceback.format_exc())
+            raise
 
     if not callable(namespace.get("ask_agentic_system")):
         raise RuntimeError("ask_agentic_system was not initialized.")
@@ -34,12 +40,16 @@ def initialize_engine(secrets=None):
 def ask(engine, question, state):
     """Execute a question while protecting the engine's shared globals."""
     with LOCK:
-        result = engine["ask_agentic_system"](
-            question,
-            base_state=state,
-            update_global_state=False,
-            register_history=True,
-        )
+        try:
+            result = engine["ask_agentic_system"](
+                question,
+                base_state=state,
+                update_global_state=False,
+                register_history=True,
+            )
+        except Exception:
+            logging.error("ENGINE_ASK_ORIGINAL_TRACEBACK\n%s", traceback.format_exc())
+            raise
         if not isinstance(result, dict):
             raise RuntimeError("Unexpected engine response.")
 
@@ -60,6 +70,8 @@ def ask(engine, question, state):
                 and "financial_metrics" in str(step.get("selected_tool", step.get("tool", ""))).lower()
                 for step in trace
             )
+        if failed:
+            logging.error("ENGINE_TOOL_FAILURE question=%r tool_execution_errors=%s execution_trace=%s", question, errors, trace)
         if failed and ("financial_metrics" in str(errors).lower() or "financial_metrics" in str(trace).lower()):
             raise RuntimeError(
                 "A required financial_metrics tool execution failed; inspect the tool execution state."
