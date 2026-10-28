@@ -1,29 +1,23 @@
-# ========= ORIGINAL NOTEBOOK CELL 66 =========
-# ============================================================
-# BOX 50 — REAL INPUT FOR THE AGENTIC SYSTEM
-# ============================================================
+"""Interactive Colab interface for the agentic financial intelligence system.
 
-if "conversation_history" not in globals():
-    conversation_history = []
-
-# Maximum width of printed lines
-PRINT_WIDTH = 90
-
+The module defines the interactive session without starting an input loop at import.
+Run `run_interactive_session()` explicitly in Colab after loading the other modules.
+Streamlit should call `ask_agentic_system` directly instead of launching this CLI.
+"""
 
 import re
 import textwrap
 
-# Presentation-only filter: keep the generated answer and history unchanged.
 _INTERNAL_EVIDENCE_ID = r"STEP_\d+::[A-Za-z_][\w]*(?:::\d+(?:-\d+)?)?"
 _INTERNAL_EVIDENCE_GROUP = re.compile(
-    r"\(\s*" + _INTERNAL_EVIDENCE_ID +
-    r"(?:\s*[,;]\s*" + _INTERNAL_EVIDENCE_ID + r")*\s*\)"
+    r"\(\s*" + _INTERNAL_EVIDENCE_ID
+    + r"(?:\s*[,;]\s*" + _INTERNAL_EVIDENCE_ID + r")*\s*\)"
 )
 _INTERNAL_EVIDENCE_STANDALONE = re.compile(_INTERNAL_EVIDENCE_ID)
 
 
 def clean_display_answer(text):
-    """Remove only internal evidence references from a display copy."""
+    """Hide internal evidence IDs in the displayed copy of the answer."""
     text = str(text)
     text = _INTERNAL_EVIDENCE_GROUP.sub("", text)
     text = _INTERNAL_EVIDENCE_STANDALONE.sub("", text)
@@ -33,67 +27,37 @@ def clean_display_answer(text):
     return text
 
 
-def print_wrapped_text(text, width=PRINT_WIDTH):
-    """
-    Prints the text across multiple lines while keeping
-    the output readable without modifying the content.
-    """
-    text = str(text).strip()
-
-    paragraphs = text.splitlines()
-
-    for paragraph in paragraphs:
-
-        if not paragraph.strip():
+def print_wrapped_text(text, width=90):
+    """Wrap interactive terminal output to avoid horizontal scrolling."""
+    for paragraph in str(text).strip().splitlines():
+        if paragraph.strip():
+            print(textwrap.fill(paragraph, width=width,
+                                break_long_words=False,
+                                break_on_hyphens=False))
+        else:
             print()
+
+
+def run_interactive_session():
+    """Start the real question/answer loop when explicitly invoked in Colab."""
+    if "ask_agentic_system" not in globals() or "final_state" not in globals():
+        raise RuntimeError("Load the five core modules before starting the interactive session.")
+    history = globals().setdefault("conversation_history", [])
+    while True:
+        try:
+            question = input("QUESTION > ").strip()
+        except (EOFError, KeyboardInterrupt):
+            break
+        if question.lower() in {"exit", "quit", "end"}:
+            break
+        if not question:
             continue
-
-        print(
-            textwrap.fill(
-                paragraph,
-                width=width,
-                break_long_words=False,
-                break_on_hyphens=False
-            )
+        result = ask_agentic_system(
+            question,
+            base_state=final_state,
+            update_global_state=True,
+            register_history=True,
         )
-
-
-print("\nInteractive session ready. Enter a financial question.")
-print("Type 'exit' to end the session. ('quit' and 'end' also work.)")
-
-while True:
-    try:
-        question = input("\nQUESTION > ")
-    except (EOFError, KeyboardInterrupt):
-        print("\nSession ended.")
-        break
-
-    if question.strip().lower() in {"exit", "quit", "end"}:
-        print("\nSession ended.")
-        break
-
-    if not question.strip():
-        continue
-
-    result = ask_agentic_system(
-        question,
-        base_state=final_state,
-        update_global_state=True,
-        register_history=True
-    )
-
-    answer = result["final_answer"]
-
-    conversation_history.append(
-        {
-            "question": question,
-            "answer": answer
-        }
-    )
-
-    print("\n" + "=" * 100)
-    print("\nQUESTION >\n")
-    print_wrapped_text(question)
-    print("\nANSWER >\n")
-    print_wrapped_text(clean_display_answer(answer))
-    print("\n" + "=" * 100)
+        answer = result["final_answer"]
+        history.append({"question": question, "answer": answer})
+        print_wrapped_text(clean_display_answer(answer))
