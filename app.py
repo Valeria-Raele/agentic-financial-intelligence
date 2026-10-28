@@ -417,6 +417,13 @@ if st.session_state["research_turns"]:
             st.divider()
 
 st.markdown('<div class="research-divider"></div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="a-page">
+  <div class="eyebrow">Available Companies · Dow Jones 30</div>
+  <div class="company-list">3M · Amazon · American Express · Amgen · Apple · Boeing · Caterpillar · Chevron · Cisco · Coca-Cola · Disney · Goldman Sachs · Home Depot · Honeywell · IBM · Johnson &amp; Johnson · JPMorgan Chase · McDonald’s · Merck · Microsoft · Nike · NVIDIA · Procter &amp; Gamble · Salesforce · Sherwin-Williams · Travelers · UnitedHealth · Verizon · Visa · Walmart</div>
+</div>
+""", unsafe_allow_html=True)
+
 with st.expander("Explore example questions · 20 research ideas", expanded=False):
     st.caption("Choose a question to insert it into the research field. You can edit it before analyzing.")
     category = st.radio(
