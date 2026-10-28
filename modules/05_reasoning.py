@@ -4928,7 +4928,6 @@ def evidence_normalizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
 evidence_normalization_node = evidence_normalizer_node
 
 _box44_original_normalizer_document_status = evidence_normalizer_node
-
 def evidence_normalizer_node(state: Dict[str, Any]) -> Dict[str, Any]:
     result = _box44_original_normalizer_document_status(state)
     check_state = dict(state)
@@ -5211,6 +5210,7 @@ def build_answer_synthesis_prompt(user_question, execution_plan, selected_eviden
     deterministic_contract = {'logic': filter_result.get('logic', 'AND'), 'filtered_tickers': filter_result.get('filtered_tickers', []), 'conditions': filter_result.get('normalized_conditions', [])}
     return prompt + '\n\nDETERMINISTIC MULTI-CONDITION FILTER CONTRACT:\n' + json.dumps(deterministic_contract, ensure_ascii=False, default=str) + '\nThe filtered_tickers list was computed deterministically by BOX 43 from the already calculated metrics. It is authoritative. Do NOT independently select, add, remove, rank, or replace tickers. Use exactly and only filtered_tickers when answering which assets satisfy the requested conditions. Your task is limited to presenting and explaining the deterministic result using the available evidence.\n'
 
+_box45_original_prompt_document_check = build_answer_synthesis_prompt
 def build_answer_synthesis_prompt(user_question, execution_plan, selected_evidence, missing_information):
     prompt = _box45_original_prompt_document_check(user_question, execution_plan, selected_evidence, missing_information)
     documentary = [e for e in selected_evidence or [] if isinstance(e, dict) and e.get('selected_tool') == 'press_release_fy2025' and (e.get('output_name') == 'press_release_result') and isinstance(e.get('value'), dict) and str(e['value'].get('evidence_text') or '').strip()]
@@ -5220,6 +5220,7 @@ def build_answer_synthesis_prompt(user_question, execution_plan, selected_eviden
     prompt += '\n\nDOCUMENT EVIDENCE IDS: When populating used_evidence_ids, copy the full evidence_id verbatim, including numbered ::1, ::2 suffixes. Do not cite a parent STEP_N::press_release_result ID. Available documentary IDs: ' + json.dumps(exact_document_ids, ensure_ascii=False) + '\n'
     return prompt + '\n\nDOCUMENT AVAILABILITY CONTRACT: The selected_evidence includes successfully retrieved press releases (press_release_result). Never say that an available document was not retrieved. Use its actual content in the comparative management-outlook commentary. Absence of explicit numerical FY2026 guidance is distinct from absence of the press release; discuss qualitative outlook when supported. For any genuinely missing document, state the limitation without inventing facts. Do not claim that every requested metric is available merely because a press release exists.\n'
 
+_box45_original_synthesis_document_check = agent_13_answer_synthesis
 def agent_13_answer_synthesis(state: Dict[str, Any]) -> Dict[str, Any]:
     synthesis_state = dict(state)
     full = list(state.get('selected_evidence') or [])
@@ -5239,6 +5240,7 @@ answer_synthesizer_agent = agent_13_answer_synthesis
 if 'AGENT_REGISTRY' in globals() and ANSWER_SYNTHESIZER_AGENT_NAME in AGENT_REGISTRY:
     AGENT_REGISTRY[ANSWER_SYNTHESIZER_AGENT_NAME]['function'] = agent_13_answer_synthesis
 
+_box45_prompt_before_document_classification = build_answer_synthesis_prompt
 def build_answer_synthesis_prompt(user_question, execution_plan, selected_evidence, missing_information):
     prompt = _box45_prompt_before_document_classification(user_question, execution_plan, selected_evidence, missing_information)
     return prompt + '\n\nPRESS RELEASES ONLY (press_release_fy2025): The documentary category and its synonyms were already resolved by BOX 36. Treat matched_metric as the canonical category; do not re-test whether the supplied section qualifies as FY_RESULTS, GUIDANCE_OUTLOOK, CEO_COMMENTARY, CFO_COMMENTARY, HIGHLIGHTS, or another BOX 36 category. Summarize the actual supplied section content, retaining the original title and citing its evidence IDs. Missing individual figures are not missing sections. Do not apply this rule to quantitative tools.\n'
@@ -5639,6 +5641,7 @@ def audit_reuse_evidence_coverage(state):
             issues.append({'step_id': sid, 'error': 'REUSED_EVIDENCE_NOT_LINKED'})
     return issues
 
+_box46_original_validator_document_check = agent_14_answer_validation
 def agent_14_answer_validation(state: Dict[str, Any]) -> Dict[str, Any]:
     result = _box46_original_validator_document_check(state)
     check = dual_domain_post_validation_check(state)
