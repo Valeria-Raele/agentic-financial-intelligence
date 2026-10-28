@@ -5,9 +5,19 @@
 The project is developed with a modular architecture and maintained in a public GitHub repository. A Google Colab notebook documents implementation decisions, explanations, comments, and the analytical workflow. A separate interactive demo is linked to the project.
 
 - **Repository:** https://github.com/Valeria-Raele/agentic-financial-intelligence
-- **Interactive demo:** []
-- **Annotated Google Colab notebook:** []
 - **License:** MIT (OSI-approved).
+
+## Live Demo
+
+Explore the interactive financial research interface:
+
+**[Analysta Intelligence — Live Demo](https://ai-financial-intelligence-system.streamlit.app/)**
+
+## Google Colab Notebook
+
+Explore the project's implementation and execution workflow:
+
+**[Open Agentic Financial Intelligence in Google Colab](https://colab.research.google.com/github/Valeria-Raele/agentic-financial-intelligence/blob/main/notebooks/Agentic_Financial_Intelligence.ipynb)**
 
 ## Installation and execution
 
