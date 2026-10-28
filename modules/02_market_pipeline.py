@@ -1,3 +1,46 @@
+# Streamlit adapter: caching is enabled only in an active Streamlit runtime.
+# Data acquisition remains in yfinance; no financial formula is changed.
+def _download_yahoo_market_data(ticker_symbols, start_date, end_date, interval):
+    ticker_symbols = tuple(ticker_symbols)
+
+    def _fetch(tickers, start, end, frequency):
+        return yf.download(
+            tickers=list(tickers), start=start, end=end,
+            interval=frequency, group_by='ticker', auto_adjust=False,
+            actions=False, progress=False, threads=True,
+        )
+
+    try:
+        import streamlit as st
+        streamlit_running = st.runtime.exists()
+    except (ImportError, AttributeError, RuntimeError):
+        streamlit_running = False
+
+    if streamlit_running:
+        # A module-level cached function is reused across reruns by Streamlit.
+        return _cached_yahoo_market_data(ticker_symbols, start_date, end_date, interval)
+    return _fetch(ticker_symbols, start_date, end_date, interval)
+
+
+def _cached_yahoo_market_data(ticker_symbols, start_date, end_date, interval):
+    # The wrapper is replaced with st.cache_data lazily, only inside Streamlit.
+    return yf.download(
+        tickers=list(ticker_symbols), start=start_date, end=end_date,
+        interval=interval, group_by='ticker', auto_adjust=False,
+        actions=False, progress=False, threads=True,
+    )
+
+
+try:
+    import streamlit as _st_module2
+    if _st_module2.runtime.exists():
+        _cached_yahoo_market_data = _st_module2.cache_data(ttl=300, show_spinner=False)(
+            _cached_yahoo_market_data
+        )
+except (ImportError, AttributeError, RuntimeError):
+    pass
+
+
 def request_interpreter_agent(state: MarketDataState) -> Dict[str, Any]:
     """
     Interprets the user's request and returns
@@ -118,7 +161,7 @@ def market_data_collector_agent(state: MarketDataState) -> Dict[str, Any]:
     maximum_attempts = 3
     for attempt in range(1, maximum_attempts + 1):
         try:
-            raw_data = yf.download(tickers=selected_tickers, start=start_datetime.strftime('%Y-%m-%d'), end=download_end_date, interval=interval, group_by='ticker', auto_adjust=False, actions=False, progress=False, threads=True)
+            raw_data = _download_yahoo_market_data(selected_tickers, start_datetime.strftime('%Y-%m-%d'), download_end_date, interval)
             if raw_data is not None and isinstance(raw_data, pd.DataFrame) and (not raw_data.empty):
                 break
             errors.append(f'Download attempt {attempt}: Yahoo Finance returned an empty DataFrame.')
