@@ -408,9 +408,6 @@ if st.button("Analyze", type="primary"):
         except Exception as exc:
             st.error(f"Research engine error: {exc}")
 
-st.markdown("**Research Processing Time**")
-st.caption("Due to the highly sophisticated and structured nature of the financial analysis, the system requires approximately **10–20 minutes to generate a response**. Please allow this time for the analysis to complete.")
-
 if st.session_state["research_turns"]:
     st.markdown("### Research Answers")
     with st.container(height=460, border=True):
@@ -453,5 +450,6 @@ with st.expander("Explore example questions · 20 research ideas", expanded=Fals
                     use_container_width=True,
                 )
 
-st.markdown('<div class="a-page"><div class="foot">AI Financial Intelligence · Powered by NVIDIA Nemotron and Nebius</div></div>', unsafe_allow_html=True)
+st.markdown('<div class="a-page" style="margin-top:32px"><p style="color:#8B9AAA;font-size:11px;line-height:1.65;margin:0">Research Processing Time: Due to the highly sophisticated and structured nature of the financial analysis, the system requires approximately 10–20 minutes to generate a response. Please allow this time for the analysis to complete.</p></div>', unsafe_allow_html=True)
 
+st.markdown('<div class="a-page"><div class="foot">AI Financial Intelligence · Powered by NVIDIA Nemotron and Nebius</div></div>', unsafe_allow_html=True)
