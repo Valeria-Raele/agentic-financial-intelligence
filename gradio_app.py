@@ -184,4 +184,4 @@ if __name__ == "__main__":
     # Without it, the app is public (recommended for hackathon judges).
     password = os.environ.get("ACCESS_PASSWORD", "").strip()
     authentication = [("research", password)] if password else None
-    demo.queue(default_concurrency_limit=1).launch(auth=authentication)
+    demo.queue(default_concurrency_limit=1).launch(auth=authentication, ssr_mode=False)
