@@ -380,11 +380,41 @@ question = st.text_area(
     key="research_question",
 )
 
+# The research engine is loaded only after authentication and on the first query.
+@st.cache_resource(show_spinner=False)
+def load_research_engine():
+    from streamlit_engine import initialize_engine
+    return initialize_engine(st.secrets)
+
+if "research_turns" not in st.session_state:
+    st.session_state["research_turns"] = []
+
 if st.button("Analyze", type="primary"):
-    if not st.session_state.get("research_question", "").strip():
+    current_question = st.session_state.get("research_question", "").strip()
+    if not current_question:
         st.warning("Please enter a financial research question.")
     else:
-        st.info("The landing page is ready. The live agentic research system will be connected to FastAPI in the next phase.")
+        try:
+            with st.spinner("Analyzing financial evidence…"):
+                engine = load_research_engine()
+                from streamlit_engine import ask
+                current_state = st.session_state.get("agentic_state")
+                if current_state is None:
+                    import copy
+                    current_state = copy.deepcopy(engine["final_state"])
+                answer, updated_state = ask(engine, current_question, current_state)
+                st.session_state["agentic_state"] = updated_state
+                st.session_state["research_turns"].append((current_question, answer))
+        except Exception as exc:
+            st.error(f"Research engine error: {exc}")
+
+if st.session_state["research_turns"]:
+    st.markdown("### Research Answers")
+    with st.container(height=460, border=True):
+        for i, (asked, answered) in enumerate(st.session_state["research_turns"], 1):
+            st.markdown(f"**Question {i}:** {asked}")
+            st.markdown(answered)
+            st.divider()
 
 st.markdown('<div class="research-divider"></div>', unsafe_allow_html=True)
 with st.expander("Explore example questions · 20 research ideas", expanded=False):
@@ -421,3 +451,4 @@ with st.expander("Explore example questions · 20 research ideas", expanded=Fals
                 )
 
 st.markdown('<div class="a-page"><div class="foot">AI Financial Intelligence · Powered by NVIDIA Nemotron and Nebius</div></div>', unsafe_allow_html=True)
+
