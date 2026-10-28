@@ -2,32 +2,114 @@
 
 ## Project access and reproducibility
 
-The project is developed with a modular architecture and maintained in a public GitHub repository. A Google Colab notebook documents implementation decisions, explanations, comments, and the analytical workflow. A separate interactive demo is linked to the project.
+Agentic Financial Intelligence is an AI-powered financial research system designed to integrate quantitative market analysis, corporate financial documentation, and agentic reasoning across 30 Dow Jones Industrial Average companies.
 
-- **Repository:** https://github.com/Valeria-Raele/agentic-financial-intelligence
-- **License:** MIT (OSI-approved).
+The project is built on a modular Python architecture that supports multidimensional financial analysis, comparative evaluation, and natural-language interaction. It combines financial market data with corporate disclosures to provide a unified framework for investigating company performance, risk characteristics, and financial outlooks.
+
+The complete implementation is maintained in a public GitHub repository. The Python modules constitute the core executable system, while a separate Google Colab notebook documents the project's methodology, development process, and analytical framework.
+
+- **Repository:** [Agentic Financial Intelligence — GitHub](https://github.com/Valeria-Raele/agentic-financial-intelligence)
+- **License:** MIT (OSI-approved)
 
 ## Live Demo
 
-Explore the interactive financial research interface:
+Access **AI Financial Intelligence**, the interactive interface for multidimensional financial research across 30 Dow Jones Industrial Average companies.
 
-**[Analysta Intelligence — Live Demo](https://ai-financial-intelligence-system.streamlit.app/)**
+**[AI Financial Intelligence — Live Demo](https://ai-financial-intelligence-system.streamlit.app/)**
 
-## Google Colab Notebook
-
-Explore the project's implementation and execution workflow:
-
-**[Open Agentic Financial Intelligence in Google Colab](https://colab.research.google.com/github/Valeria-Raele/agentic-financial-intelligence/blob/main/notebooks/Agentic_Financial_Intelligence.ipynb)**
+The application provides a unified interface for exploring quantitative market indicators, corporate financial disclosures, and AI-powered financial analysis through natural-language queries.
 
 ## Installation and execution
 
-1. Open the project notebook in Google Colab from the repository or the public Colab link.
-2. In Colab, open **Secrets** (key icon) and configure the API credentials used by the notebook, including `NEBIUS_API_KEY`, `TWELVE_DATA` and `LANGSMITH_API_KEY`, enabling notebook access. Configure `TAVILY` for the optional sector-classification print in Box 4.
-3. Review the notebook configuration cells and any required external data-provider credentials.
-4. Run the notebook cells in their documented order, starting with library imports, configuration, and data acquisition. The notebook includes the project-specific environment and dependency setup.
-5. Run Box 4 to validate the Dow Jones universe and request the Tavily sector classification. Continue with the quantitative and documentary workflows and the conversational querying interface.
+The system is implemented through six Python modules that separate environment configuration, data acquisition, financial analytics, documentary processing, agentic reasoning, and interactive execution.
 
-API keys must be supplied privately through Colab Secrets or environment variables and must never be committed to GitHub.
+The modular implementation is the primary execution workflow. The Google Colab notebook is provided separately as a technical and methodological reference.
+
+### 1. Clone the repository
+
+Clone the public repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/Valeria-Raele/agentic-financial-intelligence.git
+cd agentic-financial-intelligence
+```
+
+### 2. Set up the Python environment
+
+Create a virtual environment:
+
+```bash
+python -m venv .venv
+```
+
+Activate the environment.
+
+**Windows:**
+
+```bash
+.venv\Scripts\activate
+```
+
+**macOS / Linux:**
+
+```bash
+source .venv/bin/activate
+```
+
+Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Configure API credentials
+
+The system integrates external services for financial market data, AI model inference, and execution tracing.
+
+Configure the following API credentials in the execution environment:
+
+- `NEBIUS_API_KEY` — access to Nebius-hosted AI models, including NVIDIA open-source models.
+- `TWELVE_DATA` — retrieval of financial market data.
+- `LANGSMITH_API_KEY` — execution tracing and observability, when enabled.
+
+Credentials must be supplied securely through environment variables or the configuration mechanism supported by the execution environment.
+
+### 4. Run the modular system
+
+The core implementation is organized in the `modules/` directory, with `run.py` serving as the main execution entry point.
+
+Launch the system from the repository root:
+
+```bash
+python run.py
+```
+
+The execution workflow initializes the required components and provides access to the system's financial analysis and conversational querying capabilities.
+
+A compatible Python environment, installed dependencies, and valid API credentials are required.
+
+### 5. Explore the financial research capabilities
+
+The agentic system supports financial research across multiple analytical dimensions:
+
+- **Quantitative market analysis:** annualized returns, volatility, Sharpe Ratios, Return-to-Risk Ratios, momentum, Pearson correlations, CAPM metrics, trend-following signals, and trading volume.
+- **Corporate financial analysis:** FY2025 financial and operating results, management commentary, strategic priorities, and disclosed financial outlooks.
+- **Comparative financial evaluation:** analysis across companies, observation periods, risk-return profiles, and corporate financial disclosures.
+- **Multidimensional reasoning:** integration of quantitative metrics and documentary evidence to support financial interpretation and comparative assessment.
+- **Agentic analytical tasks:** natural-language requests involving comparison, ranking, evaluation, explanation, and synthesis.
+- **Conversational memory and contextual retrieval:** persistent tracking of previous questions and answers, enabling the system to retrieve relevant conversation history, maintain context across interactions, and interpret follow-up queries within a continuous financial research dialogue.
+
+## Google Colab Notebook
+
+The Google Colab notebook provides the project's technical and methodological documentation, including its original development workflow, implementation decisions, analytical methods, code explanations, and supporting commentary.
+
+**[Open Agentic Financial Intelligence in Google Colab](https://colab.research.google.com/github/Valeria-Raele/agentic-financial-intelligence/blob/main/notebooks/Agentic_Financial_Intelligence.ipynb)**
+
+The notebook serves as a complementary reference for examining the system's architecture, financial methodologies, and development process.
+
+The modular Python implementation remains the primary execution workflow. The notebook is not required to access the live demo or execute the modular system.
+
+For independent notebook execution, configure the required API credentials through **Google Colab Secrets**, enable notebook access, and run the cells in their documented order.
 
 ## NVIDIA Nemotron 3 Ultra 550B - Model Integration and Prompt-Engineering Approach
 
