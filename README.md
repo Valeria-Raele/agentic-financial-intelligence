@@ -6,30 +6,30 @@ Agentic Financial Intelligence is an AI-powered financial research system design
 
 The project is built on a modular Python architecture that supports multidimensional financial analysis, comparative evaluation, and natural-language interaction. It combines financial market data with corporate disclosures to provide a unified framework for investigating company performance, risk characteristics, and financial outlooks.
 
-The complete implementation is maintained in a public GitHub repository. The Python modules constitute the core executable system, while a separate Google Colab notebook documents the project's methodology, development process, and analytical framework.
+The complete implementation is maintained in a public GitHub repository. The Python modules constitute the core executable system. Two separate Google Colab notebooks provide access to the interactive Gradio prototype and to the project's technical and methodological development documentation, respectively.
 
 - **Repository:** [Agentic Financial Intelligence — GitHub](https://github.com/Valeria-Raele/agentic-financial-intelligence)
+- **Demo Prototype (Google Colab):** [Open the interactive demo](https://colab.research.google.com/drive/1SnWH01vcSzxw_62JpNLrsEQNh0neHs77?usp=sharing)
+- **Technical and methodological notebook:** [Agentic Financial Intelligence — Google Colab](https://colab.research.google.com/github/Valeria-Raele/agentic-financial-intelligence/blob/main/notebooks/Agentic_Financial_Intelligence.ipynb)
 - **License:** MIT (OSI-approved)
 
-## Live Demo
+## Live Demo — Demo Prototype
 
-Access **AI Financial Intelligence**, the interactive interface for multidimensional financial research across 30 Dow Jones Industrial Average companies.
+Access **AI Financial Intelligence**, the interactive Gradio interface for multidimensional financial research across 30 Dow Jones Industrial Average companies.
 
-**[AI Financial Intelligence — Live Demo](https://ai-financial-intelligence-system.streamlit.app/)**
+**[Launch Demo Prototype in Google Colab](https://colab.research.google.com/drive/1SnWH01vcSzxw_62JpNLrsEQNh0neHs77?usp=sharing)**
 
 **Demo access instructions**
 
-The live demo is password-protected. To access the application, open the link above and enter the following password when prompted:
-
-**Password:** `HACKATHON2026`
+Open the Demo Prototype notebook in Google Colab. Configure the required API credentials using your own Google Colab Secrets, and grant the notebook access to those secrets. Run the notebook's launch cell using its start button, then allow a few minutes for initialization. Once the Gradio link appears, open it to access the interactive landing page and submit financial research questions.
 
 The application provides a unified interface for exploring quantitative market indicators, corporate financial disclosures, and AI-powered financial analysis through natural-language queries.
 
 ## Installation and execution
 
-The system is implemented through six Python modules that separate environment configuration, data acquisition, financial analytics, documentary processing, agentic reasoning, and interactive execution.
+The system is implemented through six Python modules that separate environment configuration, data acquisition, financial analytics, documentary processing, agentic reasoning, and interactive execution. The Gradio interface is implemented in `gradio_app.py`, which calls `hf_engine.py` to initialize and invoke the underlying computational modules.
 
-The modular implementation is the primary execution workflow. The Google Colab notebook is provided separately as a technical and methodological reference.
+The **Demo Prototype** notebook is the streamlined entry point for launching the Gradio interface. The separate **Agentic Financial Intelligence** notebook in `notebooks/` documents the development process and analytical methodology.
 
 ### 1. Clone the repository
 
@@ -70,29 +70,27 @@ pip install -r requirements.txt
 
 ### 3. Configure API credentials
 
-The system integrates external services for financial market data, AI model inference, and execution tracing.
+The system integrates external services for financial market data, AI model inference, and optional execution tracing.
 
-Configure the following API credentials in the execution environment:
+Configure the following API credentials in the execution environment, using **Google Colab Secrets** when launching the Demo Prototype:
 
 - `NEBIUS_API_KEY` — access to Nebius-hosted AI models, including NVIDIA open-source models.
 - `TWELVE_DATA` — retrieval of financial market data.
 - `LANGSMITH_API_KEY` — execution tracing and observability, when enabled.
 
-Credentials must be supplied securely through environment variables or the configuration mechanism supported by the execution environment.
+Credentials must be supplied securely through the configuration mechanism supported by the execution environment. The demo uses the user's own credentials; do not enter API keys directly into the public notebook or repository.
 
-### 4. Run the modular system
+### 4. Run the system
 
-The core implementation is organized in the `modules/` directory, with `run.py` serving as the main execution entry point.
+**Interactive Gradio demo:** Open the [Demo Prototype notebook](https://colab.research.google.com/drive/1SnWH01vcSzxw_62JpNLrsEQNh0neHs77?usp=sharing), configure the required secrets, and use its launch button. The notebook prepares the runtime, loads the repository-based application, and starts the Gradio landing page. The interface uses `gradio_app.py` and `hf_engine.py` to invoke the underlying financial analysis workflow.
 
-Launch the system from the repository root:
+**Modular command-line execution:** The core implementation is organized in the `modules/` directory, with `run.py` serving as the command-line execution entry point. From the repository root, run:
 
 ```bash
 python run.py
 ```
 
-The execution workflow initializes the required components and provides access to the system's financial analysis and conversational querying capabilities.
-
-A compatible Python environment, installed dependencies, and valid API credentials are required.
+A compatible Python environment, installed dependencies, and valid API credentials are required for independent execution.
 
 ### 5. Explore the financial research capabilities
 
@@ -105,17 +103,14 @@ The agentic system supports financial research across multiple analytical dimens
 - **Agentic analytical tasks:** natural-language requests involving comparison, ranking, evaluation, explanation, and synthesis.
 - **Conversational memory and contextual retrieval:** persistent tracking of previous questions and answers, enabling the system to retrieve relevant conversation history, maintain context across interactions, and interpret follow-up queries within a continuous financial research dialogue.
 
-## Google Colab Notebook
+## Google Colab Notebooks
 
-The Google Colab notebook provides the project's technical and methodological documentation, including its original development workflow, implementation decisions, analytical methods, code explanations, and supporting commentary.
+The project provides two distinct Google Colab notebooks:
 
-**[Open Agentic Financial Intelligence in Google Colab](https://colab.research.google.com/github/Valeria-Raele/agentic-financial-intelligence/blob/main/notebooks/Agentic_Financial_Intelligence.ipynb)**
+- **Demo Prototype:** [Open the Gradio demo launcher](https://colab.research.google.com/drive/1SnWH01vcSzxw_62JpNLrsEQNh0neHs77?usp=sharing). This is the interactive prototype's entry point and is intended to be listed at the repository root.
+- **Agentic Financial Intelligence:** [Open the technical and methodological notebook](https://colab.research.google.com/github/Valeria-Raele/agentic-financial-intelligence/blob/main/notebooks/Agentic_Financial_Intelligence.ipynb). This notebook is located in the repository's `notebooks/` directory and documents the original development workflow, implementation decisions, analytical methods, code explanations, and supporting commentary.
 
-The notebook serves as a complementary reference for examining the system's architecture, financial methodologies, and development process.
-
-The modular Python implementation remains the primary execution workflow. The notebook is not required to access the live demo or execute the modular system.
-
-For independent notebook execution, configure the required API credentials through **Google Colab Secrets**, enable notebook access, and run the cells in their documented order.
+The technical notebook is a complementary reference for examining the system's architecture, financial methodologies, and development process. It is not required to launch the Demo Prototype. For independent execution of the technical notebook, configure its required API credentials through **Google Colab Secrets**, grant access to those secrets, and run the relevant cells in their documented order.
 
 ## NVIDIA Nemotron 3 Ultra 550B - Model Integration and Prompt-Engineering Approach
 
@@ -138,9 +133,9 @@ Nebius provides access to a valuable selection of AI models through a relatively
 
 The dashboard is useful, offering clear and detailed visibility into credit balances, token consumption, and usage costs across different models, which helps monitor experimentation expenses. Overall, Nebius provides a solid and functional environment for developing and testing multi-agent AI applications.
 
-## Tavily - Complementary Company Sector Classification
+## Tavily - Exploratory Company Research
 
-Tavily was integrated as a complementary, informational web-search tool to retrieve the industry sectors of the 30 Dow Jones companies analyzed in the project. The sector-grouped printout in Box 4 adds qualitative company context alongside the project's quantitative analysis. The search is performed through the Tavily API at runtime, using the `TAVILY` secret stored privately in Google Colab.
+Tavily was used for exploratory research on the companies in the Dow Jones universe, including an investigation of their industry sectors. The resulting sector-oriented research output is documented in the **Agentic Financial Intelligence** technical and methodological Google Colab notebook, located in the repository's `notebooks/` directory.
 
 
 ## Project Specifications and Conversational Question Flow
@@ -1036,13 +1031,6 @@ yet been fully rewarded by its stock performance.
 
 ====================================================================================================
 ```
-
-### Response Generation Time
-
-Generating an answer to a financial question may take approximately **10–20 minutes**, depending on the complexity of the question and external API response times.
-
-This processing time is expected. Please allow the system to complete its analysis and generate the response.
-
 
 ## Major Code-Level Developments - Original Source Text
 
