@@ -5,6 +5,7 @@ import types
 import threading
 import logging
 import traceback
+import re
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
@@ -51,6 +52,16 @@ def initialize_engine(secrets):
     if not isinstance(namespace.get("final_state"), dict):
         raise RuntimeError("final_state was not initialized.")
     return namespace
+
+def clean_display_answer(text):
+    """Remove internal evidence references from display text only."""
+    text = str(text)
+    text = re.sub(r"\(\s*STEP_\d+::[A-Za-z_]\w*(?:::\d+(?:-\d+)?)?(?:\s*[,;]\s*(?:(?:STEP_\d+::[A-Za-z_]\w*::)?|::)\d+(?:-\d+)?)*\s*\)", "", text)
+    text = re.sub(r"STEP_\d+::[A-Za-z_]\w*(?:::\d+(?:-\d+)?)?", "", text)
+    text = re.sub(r"\(\s*[,;\s:]*\)", "", text)
+    text = re.sub(r"[ \t]+([.,;:])", r"\1", text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    return text
 
 def ask(engine, question, state):
     # The original engine uses module globals. Serialize calls to avoid concurrent access.
@@ -111,4 +122,4 @@ def ask(engine, question, state):
                 "see RESEARCH_DIAGNOSTICS in logs."
             )
 
-        return str(answer), question_state
+        return clean_display_answer(answer), question_state
