@@ -78,19 +78,37 @@ def ask(engine, question, state):
         logging.warning("RESEARCH_DIAGNOSTICS: execution_trace=%r", trace)
         logging.warning("RESEARCH_DIAGNOSTICS: execution_status=%r", question_state.get("execution_status"))
 
-        # Do not expose tool failures as a technical answer to end users.
-        # Preserve the full state and diagnostics for investigation.
-        failed = False
-        if isinstance(errors, (list, tuple, dict)) and len(errors) > 0:
-            failed = True
-        if isinstance(trace, (list, tuple)):
-            failed = failed or any(
-                isinstance(step, dict)
-                and str(step.get("status", "")).upper() == "FAILED"
-                and "financial_metrics" in str(step.get("selected_tool", step.get("tool", ""))).lower()
-                for step in trace
+        # Block only confirmed financial_metrics execution failures.
+        # The presence of financial_metrics in a successful trace
+        # is not, by itself, evidence of failure.
+
+        def is_financial_metrics_failure(item):
+            if not isinstance(item, dict):
+                return False
+
+            tool_name = str(
+                item.get("selected_tool")
+                or item.get("tool")
+                or item.get("tool_name")
+                or ""
+            ).lower()
+
+            status = str(item.get("status", "")).upper()
+
+            return (
+                "financial_metrics" in tool_name
+                and status in {"FAILED", "ERROR"}
             )
-        if failed and ("financial_metrics" in str(errors).lower() or "financial_metrics" in str(trace).lower()):
-            raise RuntimeError("A required financial_metrics tool execution failed; see RESEARCH_DIAGNOSTICS in logs.")
+
+        trace_failed = (
+            isinstance(trace, (list, tuple))
+            and any(is_financial_metrics_failure(step) for step in trace)
+        )
+
+        if trace_failed:
+            raise RuntimeError(
+                "A required financial_metrics tool execution failed; "
+                "see RESEARCH_DIAGNOSTICS in logs."
+            )
 
         return str(answer), question_state
