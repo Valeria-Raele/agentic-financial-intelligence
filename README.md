@@ -12,6 +12,7 @@ The complete implementation is maintained in a public GitHub repository. The Pyt
 - **Demo Prototype (Google Colab):** [Open the interactive demo](https://colab.research.google.com/drive/1SnWH01vcSzxw_62JpNLrsEQNh0neHs77?usp=sharing)
 - **Technical and methodological notebook:** [Agentic Financial Intelligence — Google Colab](https://colab.research.google.com/github/Valeria-Raele/agentic-financial-intelligence/blob/main/notebooks/Agentic_Financial_Intelligence.ipynb)
 - **License:** MIT (OSI-approved)
+- **Financial Metrics Glossary:** [View glossary](financial_metrics_glossary.md)
 
 ## Live Demo — Demo Prototype
 
@@ -96,7 +97,7 @@ A compatible Python environment, installed dependencies, and valid API credentia
 
 The agentic system supports financial research across multiple analytical dimensions:
 
-- **Quantitative market analysis:** annualized returns, volatility, Sharpe Ratios, Return-to-Risk Ratios, momentum, Pearson correlations, CAPM metrics, trend-following signals, and trading volume.
+- **Quantitative market analysis:** annualized returns, volatility, Sharpe Ratios, Return-to-Risk Ratios, momentum, Pearson correlations, CAPM metrics, trading volume.
 - **Corporate financial analysis:** FY2025 financial and operating results, management commentary, strategic priorities, and disclosed financial outlooks.
 - **Comparative financial evaluation:** analysis across companies, observation periods, risk-return profiles, and corporate financial disclosures.
 - **Multidimensional reasoning:** integration of quantitative metrics and documentary evidence to support financial interpretation and comparative assessment.
