@@ -177,6 +177,7 @@ RESEARCH_CSS = r'''
 #research_area .example-use {background:#D5B46D!important;color:#031B35!important;border:0!important;font-weight:700!important;min-width:68px!important;}
 #research_area .processing-note {color:#9EADBC;font-size:11px;line-height:1.7;margin-top:30px;}
 @media(max-width:800px){#research_area{margin:14px 0 0;}#research_area .example-row{padding:12px!important;}}
+.gradio-container{width:100%!important;max-width:1160px!important;margin-left:auto!important;margin-right:auto!important;margin-inline:auto!important;}
 '''
 
 CSS += RESEARCH_CSS
